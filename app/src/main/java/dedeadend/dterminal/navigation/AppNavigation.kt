@@ -8,7 +8,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import dedeadend.dterminal.ui.main.MainViewModel
 import dedeadend.dterminal.ui.terminal.Terminal
 

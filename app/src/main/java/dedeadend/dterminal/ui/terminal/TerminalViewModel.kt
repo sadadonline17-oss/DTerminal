@@ -21,7 +21,7 @@ class TerminalViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    var state by mutableStateOf<TerminalState>(TerminalState.Idle)
+    var state by mutableStateOf(TerminalState.Idle)
         private set
 
     var toolsMenu by mutableStateOf(false)

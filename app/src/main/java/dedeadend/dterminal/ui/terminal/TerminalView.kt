@@ -40,14 +40,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import dedeadend.dterminal.domin.TerminalMessage
 import dedeadend.dterminal.domin.TerminalState
 import dedeadend.dterminal.ui.main.MainViewModel
-import dedeadend.dterminal.ui.theme.DTerminalTheme
 import dedeadend.dterminal.ui.theme.terminalErrorTextStyle
 import dedeadend.dterminal.ui.theme.terminalSuccessTextStyle
 import kotlinx.coroutines.yield
