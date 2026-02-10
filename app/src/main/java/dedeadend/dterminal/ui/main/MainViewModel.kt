@@ -18,7 +18,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
     private var _terminalCommand = Channel<String>(Channel.CONFLATED)
     val terminalCommand = _terminalCommand.receiveAsFlow()
 
-    fun onHistoryItemExecuteClicked(command: String) {
+    fun onItemExecuteClicked(command: String) {
         viewModelScope.launch {
             _terminalCommand.send(command)
             _navigationEvent.send(UiEvent.Navigate(AppDestinations.TERMINAL.name))

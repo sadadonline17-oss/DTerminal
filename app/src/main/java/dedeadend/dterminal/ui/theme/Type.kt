@@ -44,23 +44,13 @@ val terminalSuccessTextStyle = TextStyle(
 val terminalErrorTextStyle = TextStyle(
     fontFamily = FontFamily.Monospace,
     fontSize = 14.sp,
-    color = Color.Red,
+    color = InfoTextColor,
     lineHeight = 18.sp
 )
 
 val terminalInfoTextStyle = TextStyle(
     fontFamily = FontFamily.Monospace,
     fontSize = 14.sp,
-    color = Color.Cyan,
+    color = ErrorTextColor,
     lineHeight = 18.sp
-)
-
-val historyTextStyle = TextStyle(
-    fontStyle = FontStyle.Italic,
-    fontSize = 18.sp,
-    lineHeight = 20.sp
-)
-val historyTitleStyle = TextStyle(
-    fontStyle = FontStyle.Italic,
-    fontSize = 14.sp
 )

@@ -41,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -74,7 +75,7 @@ fun Terminal(viewModel: TerminalViewModel = hiltViewModel(), terminalCommand: Fl
     LaunchedEffect(logs) {
         if (!logs.isEmpty()) {
             yield()
-            scrollState.scrollToItem(0)
+            scrollState.animateScrollToItem(0)
         }
     }
 
@@ -129,10 +130,9 @@ fun Terminal(viewModel: TerminalViewModel = hiltViewModel(), terminalCommand: Fl
                     verticalAlignment = Alignment.Bottom
                 ) {
                     TextField(
+                        modifier = Modifier.weight(1f),
                         value = viewModel.command,
                         onValueChange = { viewModel.onCommandChange(it) },
-                        modifier = Modifier
-                            .weight(1f),
                         placeholder = {
                             Text(
                                 text = "Enter "
@@ -141,7 +141,6 @@ fun Terminal(viewModel: TerminalViewModel = hiltViewModel(), terminalCommand: Fl
                             )
                         },
                         maxLines = Int.MAX_VALUE
-
                     )
                     Box(
                         modifier = Modifier
@@ -204,7 +203,8 @@ private fun TerminalTopBar(viewmodel: TerminalViewModel, onMenuClick: () -> Unit
         Text(
             text = "DTerminal",
             style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
+            fontWeight = FontWeight.Bold
         )
 
         Box(

@@ -41,8 +41,8 @@ class ShellCommandExecutor : CommandExecutor {
             it.destroy()
             reader = null
             process = null
-            return TerminalLog(TerminalState.Error, "Process Terminated by User")
+            return TerminalLog(TerminalState.Error, "Process terminated by user")
         }
-        return TerminalLog(TerminalState.Error, "There is No Active Process")
+        return TerminalLog(TerminalState.Error, "There is no active process")
     }
 }

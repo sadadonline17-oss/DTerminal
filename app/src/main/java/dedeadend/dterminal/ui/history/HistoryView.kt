@@ -28,7 +28,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -51,26 +50,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dedeadend.dterminal.domin.History
 import dedeadend.dterminal.domin.UiEvent
-import dedeadend.dterminal.ui.theme.historyTextStyle
-import dedeadend.dterminal.ui.theme.historyTitleStyle
 
 @Composable
 fun History(
-    viewmodel: HistoryViewModel = hiltViewModel(),
+    viewModel: HistoryViewModel = hiltViewModel(),
     onHistoryItemExecuteClick: (String) -> Unit
 ) {
     val scrollState = rememberLazyListState()
-    val history by viewmodel.history.collectAsStateWithLifecycle()
+    val history by viewModel.history.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
-        viewmodel.eventFlow.collect { event ->
+        viewModel.eventFlow.collect { event ->
             if (event is UiEvent.ShowSnackbar) {
                 val result = snackbarHostState.showSnackbar(
                     message = event.message,
@@ -79,14 +78,14 @@ fun History(
                     withDismissAction = true
                 )
                 if (result == SnackbarResult.ActionPerformed) {
-                    viewmodel.undoDeleteHistoryItems()
+                    viewModel.undoDeleteHistoryItems()
                 }
             }
         }
     }
 
     Scaffold(
-        topBar = { HistoryTopBar(onClearHistoryClick = { viewmodel.clearHistory() }) },
+        topBar = { HistoryTopBar(onClearHistoryClick = { viewModel.clearHistory() }) },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
         LazyColumn(
@@ -130,7 +129,7 @@ fun History(
                     HistoryItem(
                         history = item,
                         onExecuteClick = { onHistoryItemExecuteClick(item.command) },
-                        onDeleteSwipe = { viewmodel.deleteHistoryCommand(item) }
+                        onDeleteSwipe = { viewModel.deleteHistoryCommand(item) }
                     )
                 }
             }
@@ -141,13 +140,13 @@ fun History(
 @Composable
 private fun HistoryItem(
     history: History,
-    onExecuteClick: (String) -> Unit,
-    onDeleteSwipe: (History) -> Unit
+    onExecuteClick: () -> Unit,
+    onDeleteSwipe: () -> Unit
 ) {
     val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = { value ->
             if (value == SwipeToDismissBoxValue.StartToEnd || value == SwipeToDismissBoxValue.EndToStart) {
-                onDeleteSwipe(history)
+                onDeleteSwipe()
                 true
             } else {
                 false
@@ -192,11 +191,11 @@ private fun HistoryItem(
                 Text(
                     text = "Command:",
                     textAlign = TextAlign.Left,
-                    style = historyTitleStyle
+                    style = MaterialTheme.typography.labelMedium,
+                    fontStyle = FontStyle.Italic
                 )
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
                         .height(intrinsicSize = IntrinsicSize.Min),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -204,7 +203,7 @@ private fun HistoryItem(
                         modifier = Modifier
                             .fillMaxHeight()
                             .padding(4.dp),
-                        thickness = 1.dp,
+                        thickness = 2.dp,
                         color = Color.Gray
                     )
                     SelectionContainer(
@@ -215,7 +214,7 @@ private fun HistoryItem(
                         Text(
                             text = history.command,
                             textAlign = TextAlign.Left,
-                            style = historyTextStyle
+                            style = MaterialTheme.typography.titleMedium
                         )
                     }
                     Box(
@@ -225,7 +224,7 @@ private fun HistoryItem(
                             .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.primary)
                             .clickable(enabled = true) {
-                                onExecuteClick(history.command)
+                                onExecuteClick()
                             }, contentAlignment = Alignment.Center
                     ) {
                         Icon(
@@ -255,7 +254,8 @@ private fun HistoryTopBar(onClearHistoryClick: () -> Unit) {
         Text(
             text = "History",
             style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
+            fontWeight = FontWeight.Bold
         )
 
         Box(modifier = Modifier.padding(0.dp, 16.dp, 0.dp, 0.dp)) {

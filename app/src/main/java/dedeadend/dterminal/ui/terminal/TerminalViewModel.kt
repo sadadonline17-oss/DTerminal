@@ -82,7 +82,7 @@ class TerminalViewModel @Inject constructor(
                 repository.insertToLogs(
                     TerminalLog(
                         TerminalState.Error,
-                        e.message ?: "Unknown Error"
+                        e.message ?: "Unknown error"
                     )
                 )
             } finally {

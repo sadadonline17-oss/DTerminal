@@ -31,11 +31,13 @@ fun AppNavigation(navController: NavHostController, mainVM: MainViewModel) {
             AppDestinations.HISTORY.name,
         ) {
             History(onHistoryItemExecuteClick = { command ->
-                mainVM.onHistoryItemExecuteClicked(command)
+                mainVM.onItemExecuteClicked(command)
             })
         }
         composable(AppDestinations.Scripts.name) {
-            Script()
+            Script(onSciptItemExecuteClick = { command ->
+                mainVM.onItemExecuteClicked(command)
+            })
         }
     }
 }
