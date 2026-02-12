@@ -1,5 +1,7 @@
 # --- Build Outputs ---
 /build/
+/release/
+app/release/
 *.apk
 *.aab
 *.bundle
