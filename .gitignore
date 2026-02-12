@@ -5,6 +5,7 @@ app/release/
 *.apk
 *.aab
 *.bundle
+*.dm
 output-metadata.json
 
 # --- Android Studio / IntelliJ ---
