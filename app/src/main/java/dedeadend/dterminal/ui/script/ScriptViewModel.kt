@@ -58,7 +58,7 @@ class ScriptViewModel @Inject constructor(
     fun undoDeleteScript() {
         viewModelScope.launch(ioDispatcher) {
             scriptsBackup?.let {
-                repository.insertToScripts(scriptsBackup!!.get(0))
+                repository.insertToScripts(scriptsBackup!![0])
                 scriptsBackup = null
             }
         }

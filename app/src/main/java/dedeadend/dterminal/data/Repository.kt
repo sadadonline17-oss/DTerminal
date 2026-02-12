@@ -37,10 +37,6 @@ class Repository @Inject constructor(
         commandDao.insertHistory(commands)
     }
 
-    suspend fun restoreScripts(commands: List<History>) = withContext(ioDispatcher) {
-        commandDao.insertHistory(commands)
-    }
-
     suspend fun deleteHistoryWithId(id: Int) = withContext(ioDispatcher) {
         commandDao.deleteHistoryById(id)
     }
@@ -51,10 +47,6 @@ class Repository @Inject constructor(
 
     suspend fun deleteAllHistory() = withContext(ioDispatcher) {
         commandDao.deleteAllHistory()
-    }
-
-    suspend fun deleteAllScripts() = withContext(ioDispatcher) {
-        commandDao.deleteAllScripts()
     }
 
     suspend fun deleteLogs() = withContext(ioDispatcher) {

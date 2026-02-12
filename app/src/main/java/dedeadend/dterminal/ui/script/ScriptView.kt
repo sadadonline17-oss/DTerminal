@@ -63,7 +63,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -109,7 +109,7 @@ fun Script(
         }
     }
 
-    var previousIndex by remember { mutableStateOf(0) }
+    var previousIndex by remember { mutableIntStateOf(0) }
     val isScrollingUp by remember {
         derivedStateOf {
             scrollState.firstVisibleItemIndex == 0 || previousIndex > scrollState.firstVisibleItemIndex

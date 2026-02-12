@@ -43,7 +43,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -204,7 +204,7 @@ private fun OutputItem(output: TerminalLog) {
 
 @Composable
 private fun TerminalTopBar(viewmodel: TerminalViewModel, onMenuClick: () -> Unit) {
-    var rotationAngle by remember { mutableStateOf(1080f) }
+    var rotationAngle by remember { mutableFloatStateOf(1080f) }
 
     val animatedRotation by animateFloatAsState(
         targetValue = rotationAngle,

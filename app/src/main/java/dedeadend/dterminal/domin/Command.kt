@@ -15,9 +15,3 @@ data class Script(
     val command: String,
     @PrimaryKey(autoGenerate = true) val id: Int = 0
 )
-
-@Entity(tableName = "log")
-data class Log(
-    val log: String,
-    @PrimaryKey val date: Long = System.currentTimeMillis()
-)

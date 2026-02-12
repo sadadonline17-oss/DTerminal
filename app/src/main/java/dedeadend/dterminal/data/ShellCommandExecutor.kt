@@ -52,7 +52,7 @@ class ShellCommandExecutor : CommandExecutor {
     override suspend fun cancel(): TerminalLog {
         process?.let { process ->
             val pid = getPid()
-            if (true) {
+            if (pid != -1) {
                 Runtime.getRuntime().exec("pkill -P $pid")
             }
             process.destroy()
@@ -73,7 +73,7 @@ class ShellCommandExecutor : CommandExecutor {
             val field = process!!.javaClass.getDeclaredField("pid")
             field.isAccessible = true
             field.getInt(process)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             -1
         }
     }

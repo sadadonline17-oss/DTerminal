@@ -19,6 +19,6 @@ object TerminalModule {
     @Provides
     @Singleton
     fun provideCommandExecutor(): CommandExecutor {
-        return ShellCommandExecutor();
+        return ShellCommandExecutor()
     }
 }
