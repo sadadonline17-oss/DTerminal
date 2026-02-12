@@ -2,9 +2,6 @@ package dedeadend.dterminal.ui.terminal
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +11,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -43,18 +39,10 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -62,6 +50,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dedeadend.dterminal.domin.TerminalLog
 import dedeadend.dterminal.domin.TerminalState
+import dedeadend.dterminal.ui.BaseTopBar
 import dedeadend.dterminal.ui.theme.terminalErrorTextStyle
 import dedeadend.dterminal.ui.theme.terminalInfoTextStyle
 import dedeadend.dterminal.ui.theme.terminalSuccessTextStyle
@@ -94,10 +83,7 @@ fun Terminal(viewModel: TerminalViewModel = hiltViewModel(), terminalCommand: Fl
 
     Scaffold(
         topBar = {
-            TerminalTopBar(
-                viewModel,
-                onMenuClick = { viewModel.toggleToolsMenu(true) }
-            )
+            TerminalTopBar(viewModel)
         }
     ) { paddingValues ->
         Column(
@@ -123,7 +109,10 @@ fun Terminal(viewModel: TerminalViewModel = hiltViewModel(), terminalCommand: Fl
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     reverseLayout = true
                 ) {
-                    items(items = logs, key = { item -> item.id }) { item ->
+                    items(
+                        items = logs,
+                        key = { item -> item.id },
+                        contentType = { item -> item.state }) { item ->
                         OutputItem(item)
                     }
                 }
@@ -203,67 +192,12 @@ private fun OutputItem(output: TerminalLog) {
 }
 
 @Composable
-private fun TerminalTopBar(viewmodel: TerminalViewModel, onMenuClick: () -> Unit) {
-    var rotationAngle by remember { mutableFloatStateOf(1080f) }
-
-    val animatedRotation by animateFloatAsState(
-        targetValue = rotationAngle,
-        animationSpec = tween(
-            durationMillis = 1500,
-            delayMillis = 500
-        ),
-        label = "TerminalRotation"
-    )
-    LaunchedEffect(Unit) {
-        rotationAngle -= 1080f
-    }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(90.dp)
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(16.dp),
-        verticalAlignment = Alignment.Bottom,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Row(
-            verticalAlignment = Alignment.Bottom
-        ) {
-            Box(
-                modifier = Modifier
-                    .padding(0.dp, 18.dp, 0.dp, 0.dp)
-                    .size(46.dp)
-                    .background(Color.Transparent, shape = CircleShape)
-                    .padding(0.dp, 10.dp, 0.dp, 0.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                Image(
-                    painter = painterResource(id = dedeadend.dterminal.R.drawable.ic_launcher_foreground),
-                    contentDescription = "App Icon",
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(CircleShape)
-                        .clickable(true) {
-                            rotationAngle -= 1080f
-                        }
-                        .graphicsLayer {
-                            rotationZ = animatedRotation
-                        },
-                    contentScale = ContentScale.Crop
-                )
-            }
-            Text(
-                text = "DTerminal",
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Bold
-            )
-        }
-
+private fun TerminalTopBar(viewmodel: TerminalViewModel) {
+    BaseTopBar(actions = {
         Box(
-            modifier = Modifier.padding(0.dp, 16.dp, 0.dp, 0.dp)
+            modifier = Modifier.padding(0.dp, 24.dp, 0.dp, 0.dp)
         ) {
-            IconButton(onClick = onMenuClick)
+            IconButton(onClick = { viewmodel.toggleToolsMenu(true) })
             {
                 Icon(
                     imageVector = Icons.Default.MoreVert,
@@ -275,7 +209,7 @@ private fun TerminalTopBar(viewmodel: TerminalViewModel, onMenuClick: () -> Unit
 
                 expanded = viewmodel.toolsMenu,
                 onDismissRequest = { viewmodel.toggleToolsMenu(false) },
-                offset = DpOffset(0.dp, 10.dp)
+                offset = DpOffset(0.dp, 16.dp)
             ) {
                 DropdownMenuItem(
                     text = { Text("Clear output") },
@@ -321,9 +255,9 @@ private fun TerminalTopBar(viewmodel: TerminalViewModel, onMenuClick: () -> Unit
                 )
             }
         }
-
-    }
+    })
 }
+
 
 /*
 @Preview(showBackground = true)

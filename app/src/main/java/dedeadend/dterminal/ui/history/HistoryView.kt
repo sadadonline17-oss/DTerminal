@@ -4,7 +4,6 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -51,16 +50,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dedeadend.dterminal.domin.History
 import dedeadend.dterminal.domin.UiEvent
+import dedeadend.dterminal.ui.BaseTopBar
 
 @Composable
 fun History(
@@ -245,43 +242,8 @@ private fun HistoryItem(
 
 @Composable
 private fun HistoryTopBar(onClearHistoryClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(90.dp)
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(16.dp),
-        verticalAlignment = Alignment.Bottom,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Row(
-            verticalAlignment = Alignment.Bottom
-        ) {
-            Box(
-                modifier = Modifier
-                    .padding(0.dp, 18.dp, 0.dp, 0.dp)
-                    .size(48.dp)
-                    .background(Color.Transparent, shape = CircleShape)
-                    .padding(0.dp, 10.dp, 0.dp, 0.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                Image(
-                    painter = painterResource(id = dedeadend.dterminal.R.drawable.ic_launcher_foreground),
-                    contentDescription = "App Icon",
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(CircleShape),
-                    contentScale = ContentScale.Crop
-                )
-            }
-            Text(
-                text = "History",
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Bold
-            )
-        }
-        Box(modifier = Modifier.padding(0.dp, 16.dp, 0.dp, 0.dp)) {
+    BaseTopBar(title = "History", animateOnLaunch = false, actions = {
+        Box(modifier = Modifier.padding(0.dp, 24.dp, 0.dp, 0.dp)) {
             IconButton(onClick = onClearHistoryClick)
             {
                 Icon(
@@ -291,5 +253,5 @@ private fun HistoryTopBar(onClearHistoryClick: () -> Unit) {
                 )
             }
         }
-    }
+    })
 }

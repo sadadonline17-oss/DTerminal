@@ -2,6 +2,8 @@ package dedeadend.dterminal.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,11 +14,24 @@ import dedeadend.dterminal.data.Repository
 import dedeadend.dterminal.domin.CommandDao
 import dedeadend.dterminal.domin.TerminalLogDao
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
+    private val dbCallback = object : RoomDatabase.Callback() {
+        override fun onOpen(db: SupportSQLiteDatabase) {
+            super.onOpen(db)
+            CoroutineScope(Dispatchers.IO).launch {
+                db.execSQL("DELETE FROM log WHERE id NOT IN (SELECT id FROM log ORDER BY id DESC LIMIT 1000)")
+                db.execSQL("DELETE FROM history WHERE id NOT IN (SELECT id FROM history ORDER BY id DESC LIMIT 100)")
+                db.execSQL("VACUUM")
+            }
+        }
+    }
 
     @Provides
     @Singleton
@@ -25,7 +40,7 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             "app_database"
-        ).build()
+        ).addCallback(dbCallback).build()
     }
 
     @Provides
