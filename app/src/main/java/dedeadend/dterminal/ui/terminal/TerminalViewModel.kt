@@ -44,6 +44,7 @@ class TerminalViewModel @Inject constructor(
     var command by mutableStateOf("")
         private set
 
+
     fun toggleToolsMenu(show: Boolean) {
         toolsMenu = show
     }
@@ -51,7 +52,6 @@ class TerminalViewModel @Inject constructor(
     fun toggleRoot() {
         isRoot = !isRoot
     }
-
 
     fun onCommandChange(newCommand: String) {
         command = newCommand

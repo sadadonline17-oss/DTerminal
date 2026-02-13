@@ -58,7 +58,6 @@ object DatabaseModule {
         commandDao: CommandDao,
         terminalLogDao: TerminalLogDao,
         ioDispatcher: CoroutineDispatcher
-    ) =
-        Repository(commandDao, terminalLogDao, ioDispatcher)
+    ) = Repository(commandDao, terminalLogDao, ioDispatcher)
 
 }

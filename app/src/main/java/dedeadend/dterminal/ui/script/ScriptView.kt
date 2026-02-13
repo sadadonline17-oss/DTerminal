@@ -35,6 +35,7 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DensitySmall
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
@@ -63,6 +64,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -80,6 +82,7 @@ import dedeadend.dterminal.domain.Script
 import dedeadend.dterminal.domain.UiEvent
 import dedeadend.dterminal.ui.BaseTopBar
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,10 +94,10 @@ fun Script(
     val scrollState = rememberLazyListState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scripts by viewModel.scripts.collectAsStateWithLifecycle()
+
     val snackbarHostState = remember { SnackbarHostState() }
     val snackbarScope = rememberCoroutineScope()
     var snackbarJob: Job? = null
-
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
             if (event is UiEvent.ShowSnackbar) {
@@ -112,6 +115,12 @@ fun Script(
                 }
             }
         }
+    }
+
+    var showIsEmptyIcon by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        delay(500)
+        showIsEmptyIcon = true
     }
 
     var previousIndex by remember { mutableIntStateOf(0) }
@@ -150,6 +159,31 @@ fun Script(
         floatingActionButtonPosition = FabPosition.Center
 
     ) { paddingValues ->
+        Box(modifier = Modifier.fillMaxSize()) {
+            AnimatedVisibility(
+                visible = scripts.isEmpty() && showIsEmptyIcon,
+                enter = fadeIn(
+                    animationSpec = tween(durationMillis = 1500)
+                ) + scaleIn(
+                    animationSpec = tween(durationMillis = 1500),
+                    initialScale = 0.5f
+                ),
+                exit = fadeOut(),
+                modifier = Modifier.align(Alignment.Center)
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(
+                        imageVector = Icons.Default.DensitySmall,
+                        contentDescription = "NoScriptIcon",
+                        modifier = Modifier.size(100.dp)
+                    )
+                    Text(
+                        text = "\nUse + button to add new script",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+            }
+        }
         LazyColumn(
             state = scrollState,
             modifier = Modifier
@@ -320,7 +354,8 @@ private fun ScriptItem(
                     }
                 }
             }
-        })
+        }
+    )
 }
 
 @Composable

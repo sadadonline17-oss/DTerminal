@@ -94,6 +94,7 @@ class ScriptViewModel @Inject constructor(
             )
             editingScriptNameError = ""
             editingScriptCommandError = ""
+            editingScriptId = -1
             isEditing = false
         }
     }

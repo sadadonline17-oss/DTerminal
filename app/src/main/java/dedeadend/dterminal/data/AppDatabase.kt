@@ -8,7 +8,11 @@ import dedeadend.dterminal.domain.Script
 import dedeadend.dterminal.domain.TerminalLog
 import dedeadend.dterminal.domain.TerminalLogDao
 
-@Database(entities = [TerminalLog::class, History::class, Script::class], version = 1)
+@Database(
+    entities = [TerminalLog::class, History::class, Script::class],
+    version = 1,
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun commandDao(): CommandDao
 

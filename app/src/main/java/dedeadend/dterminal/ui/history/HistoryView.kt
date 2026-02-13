@@ -1,9 +1,13 @@
 package dedeadend.dterminal.ui.history
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +30,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -44,8 +49,10 @@ import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -60,6 +67,7 @@ import dedeadend.dterminal.domain.History
 import dedeadend.dterminal.domain.UiEvent
 import dedeadend.dterminal.ui.BaseTopBar
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -69,10 +77,10 @@ fun History(
 ) {
     val scrollState = rememberLazyListState()
     val history by viewModel.history.collectAsStateWithLifecycle()
+
     val snackbarHostState = remember { SnackbarHostState() }
     val snackbarScope = rememberCoroutineScope()
     var snackbarJob: Job? = null
-
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
             if (event is UiEvent.ShowSnackbar) {
@@ -92,10 +100,42 @@ fun History(
         }
     }
 
+
+    var showIsEmptyIcon by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        delay(500)
+        showIsEmptyIcon = true
+    }
+
     Scaffold(
         topBar = { HistoryTopBar(onClearHistoryClick = { viewModel.clearHistory() }) },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
+        Box(modifier = Modifier.fillMaxSize()) {
+            AnimatedVisibility(
+                visible = history.isEmpty() && showIsEmptyIcon,
+                enter = fadeIn(
+                    animationSpec = tween(durationMillis = 1500)
+                ) + scaleIn(
+                    animationSpec = tween(durationMillis = 1500),
+                    initialScale = 0.5f
+                ),
+                exit = fadeOut(),
+                modifier = Modifier.align(Alignment.Center)
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(
+                        imageVector = Icons.Default.History,
+                        contentDescription = "NoHistoryIcon",
+                        modifier = Modifier.size(100.dp)
+                    )
+                    Text(
+                        "\nNo history yet",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+            }
+        }
         LazyColumn(
             state = scrollState,
             modifier = Modifier
@@ -243,7 +283,8 @@ private fun HistoryItem(
                     }
                 }
             }
-        })
+        }
+    )
 }
 
 @Composable
