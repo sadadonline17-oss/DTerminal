@@ -54,9 +54,7 @@ class TerminalViewModel @Inject constructor(
             systemSettings = repository.getSystemSettings().first()
             if (systemSettings?.isFirstBoot == true) {
                 showWelcomeMessage()
-                val newSettings = systemSettings?.copy(isFirstBoot = false)
-                    ?: SystemSettings(isFirstBoot = false)
-                repository.updateSettings(newSettings)
+                repository.setFirstBootCompleted()
             }
         }
     }
