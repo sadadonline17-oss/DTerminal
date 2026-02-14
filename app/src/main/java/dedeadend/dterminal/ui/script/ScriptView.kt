@@ -134,7 +134,6 @@ fun Script(
     }
 
     Scaffold(
-//        contentWindowInsets = WindowInsets(0),
         topBar = { ScriptTopBar() },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         floatingActionButton = {
@@ -163,9 +162,9 @@ fun Script(
             AnimatedVisibility(
                 visible = scripts.isEmpty() && showIsEmptyIcon,
                 enter = fadeIn(
-                    animationSpec = tween(durationMillis = 1500)
+                    animationSpec = tween(durationMillis = 1000)
                 ) + scaleIn(
-                    animationSpec = tween(durationMillis = 1500),
+                    animationSpec = tween(durationMillis = 1000),
                     initialScale = 0.5f
                 ),
                 exit = fadeOut(),
@@ -178,7 +177,7 @@ fun Script(
                         modifier = Modifier.size(100.dp)
                     )
                     Text(
-                        text = "\nUse + button to add new script",
+                        text = "\nUse + button to add a script!",
                         style = MaterialTheme.typography.titleMedium
                     )
                 }

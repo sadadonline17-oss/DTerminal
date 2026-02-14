@@ -3,7 +3,7 @@ package dedeadend.dterminal.domain
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "log")
+@Entity(tableName = "terminal_log")
 data class TerminalLog(
     val state: TerminalState,
     val message: String,

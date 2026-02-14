@@ -12,6 +12,7 @@ import dagger.hilt.components.SingletonComponent
 import dedeadend.dterminal.data.AppDatabase
 import dedeadend.dterminal.data.Repository
 import dedeadend.dterminal.domain.CommandDao
+import dedeadend.dterminal.domain.SystemSettingsDao
 import dedeadend.dterminal.domain.TerminalLogDao
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -26,10 +27,15 @@ object DatabaseModule {
         override fun onOpen(db: SupportSQLiteDatabase) {
             super.onOpen(db)
             CoroutineScope(Dispatchers.IO).launch {
-                db.execSQL("DELETE FROM log WHERE id NOT IN (SELECT id FROM log ORDER BY id DESC LIMIT 1000)")
+                db.execSQL("DELETE FROM terminal_log WHERE id NOT IN (SELECT id FROM terminal_log ORDER BY id DESC LIMIT 1000)")
                 db.execSQL("DELETE FROM history WHERE id NOT IN (SELECT id FROM history ORDER BY id DESC LIMIT 100)")
                 db.execSQL("VACUUM")
             }
+        }
+
+        override fun onCreate(db: SupportSQLiteDatabase) {
+            super.onCreate(db)
+            db.execSQL("INSERT INTO system_settings (id, isFirstBoot) VALUES (1, 1)")
         }
     }
 
@@ -51,13 +57,18 @@ object DatabaseModule {
     @Singleton
     fun provideTerminalLogDao(database: AppDatabase) = database.terminalLogDao()
 
+    @Provides
+    @Singleton
+    fun provideSystemSettingsDao(database: AppDatabase) = database.systemSettingsDao()
+
 
     @Provides
     @Singleton
     fun provideRepository(
         commandDao: CommandDao,
         terminalLogDao: TerminalLogDao,
+        systemSettings: SystemSettingsDao,
         ioDispatcher: CoroutineDispatcher
-    ) = Repository(commandDao, terminalLogDao, ioDispatcher)
+    ) = Repository(commandDao, terminalLogDao, systemSettings, ioDispatcher)
 
 }

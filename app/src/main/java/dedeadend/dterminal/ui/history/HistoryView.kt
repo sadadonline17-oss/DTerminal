@@ -115,9 +115,9 @@ fun History(
             AnimatedVisibility(
                 visible = history.isEmpty() && showIsEmptyIcon,
                 enter = fadeIn(
-                    animationSpec = tween(durationMillis = 1500)
+                    animationSpec = tween(durationMillis = 1000)
                 ) + scaleIn(
-                    animationSpec = tween(durationMillis = 1500),
+                    animationSpec = tween(durationMillis = 1000),
                     initialScale = 0.5f
                 ),
                 exit = fadeOut(),
@@ -130,7 +130,7 @@ fun History(
                         modifier = Modifier.size(100.dp)
                     )
                     Text(
-                        "\nNo history yet",
+                        "\nNo History Yet",
                         style = MaterialTheme.typography.titleMedium
                     )
                 }

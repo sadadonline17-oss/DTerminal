@@ -33,7 +33,7 @@ class ShellCommandExecutor : CommandExecutor {
             process?.inputStream?.bufferedReader()?.use { reader ->
                 var line: String?
                 while (reader.readLine().also { line = it } != null) {
-                    send(TerminalLog(TerminalState.Success, line!!))
+                    trySend(TerminalLog(TerminalState.Success, line!!))
                 }
             }
             process?.waitFor()

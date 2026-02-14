@@ -9,12 +9,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dedeadend.dterminal.data.Repository
 import dedeadend.dterminal.domain.CommandExecutor
 import dedeadend.dterminal.domain.History
+import dedeadend.dterminal.domain.SystemSettings
 import dedeadend.dterminal.domain.TerminalLog
 import dedeadend.dterminal.domain.TerminalState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -28,10 +30,10 @@ class TerminalViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
     private val repository: Repository
 ) : ViewModel() {
-
     val logs = repository.getLogs()
         .flowOn(ioDispatcher)
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
     var state by mutableStateOf(TerminalState.Idle)
         private set
 
@@ -43,6 +45,21 @@ class TerminalViewModel @Inject constructor(
 
     var command by mutableStateOf("")
         private set
+
+    var systemSettings: SystemSettings? = null
+
+
+    init {
+        viewModelScope.launch(ioDispatcher) {
+            systemSettings = repository.getSystemSettings().first()
+            if (systemSettings?.isFirstBoot == true) {
+                showWelcomeMessage()
+                val newSettings = systemSettings?.copy(isFirstBoot = false)
+                    ?: SystemSettings(isFirstBoot = false)
+                repository.updateSettings(newSettings)
+            }
+        }
+    }
 
 
     fun toggleToolsMenu(show: Boolean) {
@@ -97,7 +114,43 @@ class TerminalViewModel @Inject constructor(
     }
 
     fun terminate() =
-        viewModelScope.launch(ioDispatcher) { repository.insertToLogs(commandExecutor.cancel()) }
+        viewModelScope.launch(ioDispatcher) {
+            repository.insertToLogs(commandExecutor.cancel())
+        }
+
+    fun showWelcomeMessage() {
+        val welcomeMessage = """
+            
+            
+         _____  _____                   _              _ 
+        |  _  \|_   _|                 (_)            | |
+        | |  | | | | ___ _ __ _ __ ___  _ _ __   __ _ | |
+        | |  | | | |/ _ \ '__| '_ ` _ \| | '_ \ / _` || |
+        | |__/ / | |  __/ |  | | | | | | | | | | (_| || |
+        |_____/  \_/\___|_|  |_| |_| |_|_|_| |_|\__,_||_|
+                                        
+                                              
+                                                          
+        > I'm finally installed! I was getting bored on the "github.com/dedeadend"...
+        
+        
+        > Coffee is not included!
+        
+        
+        > Enjoy :)
+        
+        -------------------------------------------------
+        
+    """.trimIndent()
+        viewModelScope.launch(ioDispatcher) {
+            repository.insertToLogs(
+                TerminalLog(
+                    TerminalState.Success,
+                    welcomeMessage
+                )
+            )
+        }
+    }
 }
 
 fun terminalLog2String(terminalLog: TerminalLog): String {

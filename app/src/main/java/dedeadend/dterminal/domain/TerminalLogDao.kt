@@ -9,12 +9,12 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TerminalLogDao {
 
-    @Query("SELECT * FROM log ORDER BY id DESC")
+    @Query("SELECT * FROM terminal_log ORDER BY id DESC")
     fun getLogs(): Flow<List<TerminalLog>>
 
     @Insert(onConflict = REPLACE)
     suspend fun insertLog(log: TerminalLog)
 
-    @Query("DELETE FROM log")
+    @Query("DELETE FROM terminal_log")
     suspend fun deleteLogs()
 }
