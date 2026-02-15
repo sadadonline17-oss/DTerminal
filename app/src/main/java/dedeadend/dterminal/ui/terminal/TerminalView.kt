@@ -61,9 +61,6 @@ import dedeadend.dterminal.domain.TerminalState
 import dedeadend.dterminal.ui.BaseTopBar
 import dedeadend.dterminal.ui.theme.ErrorTextColor
 import dedeadend.dterminal.ui.theme.InfoTextColor
-import dedeadend.dterminal.ui.theme.terminalErrorTextStyle
-import dedeadend.dterminal.ui.theme.terminalInfoTextStyle
-import dedeadend.dterminal.ui.theme.terminalSuccessTextStyle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.yield
 

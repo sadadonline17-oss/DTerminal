@@ -15,20 +15,3 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
 )
-val terminalSuccessTextStyle = TextStyle(
-    fontFamily = FontFamily.Monospace,
-    lineHeight = 18.sp
-)
-val terminalErrorTextStyle = TextStyle(
-    fontFamily = FontFamily.Monospace,
-    fontSize = 14.sp,
-    color = ErrorTextColor,
-    lineHeight = 18.sp
-)
-
-val terminalInfoTextStyle = TextStyle(
-    fontFamily = FontFamily.Monospace,
-    fontSize = 14.sp,
-    color = InfoTextColor,
-    lineHeight = 18.sp
-)
