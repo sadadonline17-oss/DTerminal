@@ -17,7 +17,6 @@ val Typography = Typography(
 )
 val terminalSuccessTextStyle = TextStyle(
     fontFamily = FontFamily.Monospace,
-    fontSize = 14.sp,
     lineHeight = 18.sp
 )
 val terminalErrorTextStyle = TextStyle(

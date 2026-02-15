@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dedeadend.dterminal.data.Repository
 import dedeadend.dterminal.data.ShellCommandExecutor
 import dedeadend.dterminal.domain.CommandExecutor
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +19,7 @@ object TerminalModule {
 
     @Provides
     @Singleton
-    fun provideCommandExecutor(): CommandExecutor {
-        return ShellCommandExecutor()
+    fun provideCommandExecutor(repository: Repository): CommandExecutor {
+        return ShellCommandExecutor(repository)
     }
 }

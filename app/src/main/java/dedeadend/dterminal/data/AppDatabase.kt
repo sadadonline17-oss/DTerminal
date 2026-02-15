@@ -12,7 +12,7 @@ import dedeadend.dterminal.domain.TerminalLogDao
 
 @Database(
     entities = [TerminalLog::class, History::class, Script::class, SystemSettings::class],
-    version = 1,
+    version = 11,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

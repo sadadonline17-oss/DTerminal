@@ -1,5 +1,7 @@
 package dedeadend.dterminal.data
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import dedeadend.dterminal.domain.CommandDao
 import dedeadend.dterminal.domain.History
 import dedeadend.dterminal.domain.Script
@@ -9,6 +11,7 @@ import dedeadend.dterminal.domain.TerminalLog
 import dedeadend.dterminal.domain.TerminalLogDao
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -23,20 +26,16 @@ class Repository @Inject constructor(
     fun getLogs(): Flow<List<TerminalLog>> = terminalLogDao.getLogs()
     fun getSystemSettings(): Flow<SystemSettings> = systemSettingsDao.getSettings()
 
-    suspend fun insertToHistory(command: History) = withContext(ioDispatcher) {
+    suspend fun addHistory(command: History) = withContext(ioDispatcher) {
         commandDao.insertHistory(command)
     }
 
-    suspend fun insertToScripts(command: Script) = withContext(ioDispatcher) {
+    suspend fun addScript(command: Script) = withContext(ioDispatcher) {
         commandDao.insertScript(command)
     }
 
-    suspend fun insertToLogs(log: TerminalLog) = withContext(ioDispatcher) {
+    suspend fun addLog(log: TerminalLog) = withContext(ioDispatcher) {
         terminalLogDao.insertLog(log)
-    }
-
-    suspend fun updateSettings(settings: SystemSettings) = withContext(ioDispatcher) {
-        systemSettingsDao.updateSettings(settings)
     }
 
     suspend fun restoreHistory(commands: List<History>) = withContext(ioDispatcher) {
@@ -51,15 +50,28 @@ class Repository @Inject constructor(
         commandDao.deleteScriptById(id)
     }
 
-    suspend fun deleteAllHistory() = withContext(ioDispatcher) {
+    suspend fun clearHistory() = withContext(ioDispatcher) {
         commandDao.deleteAllHistory()
     }
 
-    suspend fun deleteLogs() = withContext(ioDispatcher) {
+    suspend fun clearLogs() = withContext(ioDispatcher) {
         terminalLogDao.deleteLogs()
     }
 
     suspend fun setFirstBootCompleted() = withContext(ioDispatcher) {
-        systemSettingsDao.updateSettings(SystemSettings(isFirstBoot = false))
+        val currentSettings = getSystemSettings().first()
+        systemSettingsDao.updateSettings(currentSettings.copy(isFirstBoot = false))
+    }
+
+    suspend fun setLogFontColor(r: Int, g: Int, b: Int) = withContext(ioDispatcher) {
+        val currentSettings = getSystemSettings().first()
+        systemSettingsDao.updateSettings(
+            currentSettings.copy(logFontColor = Color(r, g, b).toArgb())
+        )
+    }
+
+    suspend fun setLogFontSize(size: Int) = withContext(ioDispatcher){
+        val currentSettings = getSystemSettings().first()
+        systemSettingsDao.updateSettings(currentSettings.copy(logFontSize = size))
     }
 }

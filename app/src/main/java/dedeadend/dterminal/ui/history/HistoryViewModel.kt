@@ -33,7 +33,7 @@ class HistoryViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             if (history.value.isNotEmpty()) {
                 historyBackup = history.value.toList()
-                repository.deleteAllHistory()
+                repository.clearHistory()
                 _eventFlow.send(UiEvent.ShowSnackbar("History Cleared", "Undo"))
             }
         }

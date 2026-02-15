@@ -35,7 +35,7 @@ object DatabaseModule {
 
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
-            db.execSQL("INSERT INTO system_settings (id, isFirstBoot) VALUES (1, 1)")
+            db.execSQL("INSERT INTO system_settings (id, isFirstBoot, logFontColor, logFontSize) VALUES (1, 1, -1, 12)")
         }
     }
 

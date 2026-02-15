@@ -42,18 +42,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dedeadend.dterminal.R
+import dedeadend.dterminal.domain.SystemSettings
 import dedeadend.dterminal.domain.TerminalLog
 import dedeadend.dterminal.domain.TerminalState
 import dedeadend.dterminal.ui.BaseTopBar
+import dedeadend.dterminal.ui.theme.ErrorTextColor
+import dedeadend.dterminal.ui.theme.InfoTextColor
 import dedeadend.dterminal.ui.theme.terminalErrorTextStyle
 import dedeadend.dterminal.ui.theme.terminalInfoTextStyle
 import dedeadend.dterminal.ui.theme.terminalSuccessTextStyle
@@ -68,6 +75,7 @@ fun Terminal(viewModel: TerminalViewModel = hiltViewModel(), terminalCommand: Fl
     val screenHeight = configuration.screenHeightDp.dp
     val maxHeight = screenHeight / 3
     val scrollState = rememberLazyListState()
+    val systemSettings by viewModel.systemSettings.collectAsStateWithLifecycle()
     val logs by viewModel.logs.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
@@ -111,7 +119,7 @@ fun Terminal(viewModel: TerminalViewModel = hiltViewModel(), terminalCommand: Fl
                         items = logs,
                         key = { item -> item.id },
                         contentType = { item -> item.state }) { item ->
-                        OutputItem(item)
+                        OutputItem(item, systemSettings)
                     }
                 }
             }
@@ -174,17 +182,23 @@ fun Terminal(viewModel: TerminalViewModel = hiltViewModel(), terminalCommand: Fl
 }
 
 @Composable
-private fun OutputItem(output: TerminalLog) {
+private fun OutputItem(output: TerminalLog, systemSettings: SystemSettings) {
     SelectionContainer {
         Text(
             modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Left,
             text = terminalLog2String(output),
-            style = when (output.state) {
-                TerminalState.Info -> terminalInfoTextStyle
-                TerminalState.Error -> terminalErrorTextStyle
-                else -> terminalSuccessTextStyle
-            }
+            style = TextStyle(
+                fontFamily = FontFamily.Monospace,
+                fontSize = systemSettings.logFontSize.sp,
+                lineHeight = (systemSettings.logFontSize + 5).sp,
+                textAlign = TextAlign.Left,
+                color = when (output.state) {
+                    TerminalState.Info -> InfoTextColor
+                    TerminalState.Error -> ErrorTextColor
+                    else -> if (systemSettings.logFontColor != -1) Color(systemSettings.logFontColor)
+                    else MaterialTheme.colorScheme.onSurface
+                }
+            )
         )
     }
 }

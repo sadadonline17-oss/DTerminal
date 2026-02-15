@@ -1,6 +1,7 @@
 package dedeadend.dterminal.ui.terminal
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -18,6 +19,7 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,6 +32,11 @@ class TerminalViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
     private val repository: Repository
 ) : ViewModel() {
+
+    val systemSettings = repository.getSystemSettings()
+        .flowOn(ioDispatcher)
+        .stateIn(viewModelScope, SharingStarted.Lazily, SystemSettings())
+
     val logs = repository.getLogs()
         .flowOn(ioDispatcher)
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
@@ -46,19 +53,14 @@ class TerminalViewModel @Inject constructor(
     var command by mutableStateOf("")
         private set
 
-    var systemSettings: SystemSettings? = null
-
-
     init {
         viewModelScope.launch(ioDispatcher) {
-            systemSettings = repository.getSystemSettings().first()
-            if (systemSettings?.isFirstBoot == true) {
+            if (repository.getSystemSettings().first().isFirstBoot == true) {
                 showWelcomeMessage()
                 repository.setFirstBootCompleted()
             }
         }
     }
-
 
     fun toggleToolsMenu(show: Boolean) {
         toolsMenu = show
@@ -74,7 +76,7 @@ class TerminalViewModel @Inject constructor(
 
     fun clearOutput() {
         viewModelScope.launch(ioDispatcher) {
-            repository.deleteLogs()
+            repository.clearLogs()
         }
     }
 
@@ -85,8 +87,8 @@ class TerminalViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             val cmd = command.trim()
             command = ""
-            repository.insertToHistory(History(cmd))
-            repository.insertToLogs(
+            repository.addHistory(History(cmd))
+            repository.addLog(
                 TerminalLog(
                     TerminalState.Info,
                     (if (isRoot) "#: " else "$: ") + cmd
@@ -94,10 +96,10 @@ class TerminalViewModel @Inject constructor(
             )
             try {
                 commandExecutor.execute(cmd, isRoot).collect { log ->
-                    repository.insertToLogs(log)
+                    repository.addLog(log)
                 }
             } catch (e: Exception) {
-                repository.insertToLogs(
+                repository.addLog(
                     TerminalLog(
                         TerminalState.Error,
                         e.message ?: "Unknown error"
@@ -113,41 +115,35 @@ class TerminalViewModel @Inject constructor(
 
     fun terminate() =
         viewModelScope.launch(ioDispatcher) {
-            repository.insertToLogs(commandExecutor.cancel())
+            repository.addLog(commandExecutor.cancel())
         }
 
-    fun showWelcomeMessage() {
+    private suspend fun showWelcomeMessage() {
         val welcomeMessage = """
+                        
             
+             _____  _____                   _              _ 
+            |  _  \|_   _|                 (_)            | |
+            | |  | | | | ___ _ __ _ __ ___  _ _ __   __ _ | |
+            | |  | | | |/ _ \ '__| '_ ` _ \| | '_ \ / _` || |
+            | |__/ / | |  __/ |  | | | | | | | | | | (_| || |
+            |_____/  \_/\___|_|  |_| |_| |_|_|_| |_|\__,_||_|
+                                            
+                                                  
+                                                              
+            😍 I'm finally installed! I was getting bored on the Github.com/dedeadend...
             
-         _____  _____                   _              _ 
-        |  _  \|_   _|                 (_)            | |
-        | |  | | | | ___ _ __ _ __ ___  _ _ __   __ _ | |
-        | |  | | | |/ _ \ '__| '_ ` _ \| | '_ \ / _` || |
-        | |__/ / | |  __/ |  | | | | | | | | | | (_| || |
-        |_____/  \_/\___|_|  |_| |_| |_|_|_| |_|\__,_||_|
-                                        
-                                              
-                                                          
-        😍 I'm finally installed! I was getting bored on the Github.com/dedeadend...
-        
-        
-        ☕ Coffee is not included!
-        
-        
-        💚 Enjoy :)
-        
-        -------------------------------------------------
-        
-    """.trimIndent()
-        viewModelScope.launch(ioDispatcher) {
-            repository.insertToLogs(
-                TerminalLog(
-                    TerminalState.Success,
-                    welcomeMessage
-                )
-            )
-        }
+            ✨ Execute 'help' command to see DTerminal commands
+            
+            ☕ Coffee is not included!
+            
+            💚 Enjoy :)
+            
+            -------------------------------------------------
+            
+            """.trimIndent()
+
+        repository.addLog(TerminalLog(TerminalState.Success, welcomeMessage))
     }
 }
 
