@@ -129,13 +129,13 @@ class TerminalViewModel @Inject constructor(
                                         
                                               
                                                           
-        > I'm finally installed! I was getting bored on the "github.com/dedeadend"...
+        😍 I'm finally installed! I was getting bored on the Github.com/dedeadend...
         
         
-        > Coffee is not included!
+        ☕ Coffee is not included!
         
         
-        > Enjoy :)
+        💚 Enjoy :)
         
         -------------------------------------------------
         

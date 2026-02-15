@@ -140,12 +140,7 @@ fun History(
             state = scrollState,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(
-                    8.dp,
-                    paddingValues.calculateTopPadding(),
-                    8.dp,
-                    0.dp
-                ),
+                .padding(paddingValues),
             contentPadding = PaddingValues(12.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             reverseLayout = true
@@ -208,7 +203,7 @@ private fun HistoryItem(
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(1.dp, 9.dp)
+                    .padding(9.dp)
                     .clip(RoundedCornerShape(12.dp))
                     .background(Color.Red),
                 horizontalArrangement =
@@ -230,7 +225,7 @@ private fun HistoryItem(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(0.dp, 8.dp)
+                    .padding(8.dp)
             ) {
                 Column(
                     modifier = Modifier.padding(8.dp)

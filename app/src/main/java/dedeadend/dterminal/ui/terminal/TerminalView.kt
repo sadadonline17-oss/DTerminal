@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.material.icons.filled.Grass
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Webhook
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -43,11 +44,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dedeadend.dterminal.R
 import dedeadend.dterminal.domain.TerminalLog
 import dedeadend.dterminal.domain.TerminalState
 import dedeadend.dterminal.ui.BaseTopBar
@@ -89,18 +93,13 @@ fun Terminal(viewModel: TerminalViewModel = hiltViewModel(), terminalCommand: Fl
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(
-                    8.dp,
-                    paddingValues.calculateTopPadding(),
-                    8.dp,
-                    8.dp
-                )
+                .padding(paddingValues)
         ) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .padding(8.dp, 0.dp, 8.dp, 8.dp),
+                    .padding(16.dp, 0.dp),
             ) {
                 LazyColumn(
                     state = scrollState,
@@ -122,7 +121,7 @@ fun Terminal(viewModel: TerminalViewModel = hiltViewModel(), terminalCommand: Fl
                     .fillMaxWidth()
                     .animateContentSize()
                     .heightIn(0.dp, maxHeight)
-                    .padding(8.dp),
+                    .padding(16.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
                 Row(
@@ -193,6 +192,7 @@ private fun OutputItem(output: TerminalLog) {
 
 @Composable
 private fun TerminalTopBar(viewmodel: TerminalViewModel) {
+    val uriHandler = LocalUriHandler.current
     BaseTopBar(actions = {
         Box(
             modifier = Modifier.padding(0.dp, 24.dp, 0.dp, 0.dp)
@@ -212,6 +212,20 @@ private fun TerminalTopBar(viewmodel: TerminalViewModel) {
                 offset = DpOffset(0.dp, 16.dp)
             ) {
                 DropdownMenuItem(
+                    text = { Text("Github") },
+                    onClick = {
+                        viewmodel.toggleToolsMenu(false)
+                        uriHandler.openUri("https://github.com/dedeadend")
+                    },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_github),
+                            contentDescription = "Github",
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                )
+                DropdownMenuItem(
                     text = { Text("Clear output") },
                     onClick = {
                         viewmodel.toggleToolsMenu(false)
@@ -220,7 +234,7 @@ private fun TerminalTopBar(viewmodel: TerminalViewModel) {
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.ClearAll,
-                            contentDescription = "Delete",
+                            contentDescription = "Clear",
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
@@ -234,7 +248,7 @@ private fun TerminalTopBar(viewmodel: TerminalViewModel) {
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Clear,
-                            contentDescription = "Stop",
+                            contentDescription = "Terminate",
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
@@ -248,7 +262,7 @@ private fun TerminalTopBar(viewmodel: TerminalViewModel) {
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Grass,
-                            contentDescription = "Delete",
+                            contentDescription = "Root",
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
