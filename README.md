@@ -1,4 +1,9 @@
-![Downloads](https://img.shields.io/github/downloads/dedeadend/DTerminal/total?style=for-the-badge&color=green)
+<p align="center">
+  <img src="https://img.shields.io/github/v/release/dedeadend/DTerminal?style=for-the-badge&color=orange&logo=android" />
+  <img src="https://img.shields.io/github/downloads/dedeadend/DTerminal/total?style=for-the-badge&color=green&logo=github" />
+  <img src="https://komarev.com/ghpvc/?username=dedeadend&repo=DTerminal&label=VIEWS&color=blue&style=for-the-badge" />
+  <img src="https://img.shields.io/github/license/dedeadend/DTerminal?style=for-the-badge&color=white" />
+</p>
 
 # DTerminal
 
@@ -13,7 +18,7 @@ DTerminal is a high-performance terminal emulator designed for Android developer
 - 🔓 **Root Support**: Seamlessly switch between standard and root shells.
 - 🎨 **Dynamic Customization**: Adjust font size and terminal colors in real-time.
 - 💫 **Command History**: Persistent history storage for quick access to previous commands.
-- 📜 **Custom Script**: Persistent script storage for save and execute your custom commands easily.
+- 📜 **Custom Script**: Persistent script storage to save and execute your custom commands easily.
 - 🛠 **Internal Commands**: Built-in support for `font`, `color`, `sysinfo` and more.
 
 
@@ -33,13 +38,14 @@ DTerminal is a high-performance terminal emulator designed for Android developer
 
 #### Installation
 
-1. Download last relased APK from [Here](https://github.com/dedeadend/DTerminal/releases/latest).
+1. Download the latest released APK from [Here](https://github.com/dedeadend/DTerminal/releases/latest).
 2. Install downloaded APK file.
 3. Enjoy 💚
 
+
 ## 📌 Note
 
-Maybe see the Google Play Protect warning while installing the APK. This warning is shown because my app was recently released. This will fix automatically after a while.
+You might see a Google Play Protect warning while installing the APK. This is common for newly released open-source apps and will be resolved once the app gains more reputation.
 
 
 ## ⌨️ Custom Commands
@@ -58,7 +64,7 @@ DTerminal extends standard shell functionality with integrated custom commands:
 | `random` | `random <a> <b>` | Generate a random number between a and b |
 | `sudo` | `sudo <cmd>` | Run a specific command with root privileges |
 | `font` | `font <size>` | Set terminal font size |
-| `color` | `color <r> <g> <b>` | Clears the current session logs |
+| `color` | `color <r> <g> <b>` | Set terminal text color |
 
 
 ## 🛠 Tech Stack
@@ -83,7 +89,7 @@ Contributions are what make the open-source community such an amazing place to l
 
 
 ## ♠️Support
-You can find me at</h4>
+You can find me at
 
 <div align="left">
   <a href="https://t.me/dedeadend" target="_blank">
