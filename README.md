@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="https://img.shields.io/github/v/release/dedeadend/DTerminal?style=for-the-badge&color=orange&logo=android" />
-  <img src="https://img.shields.io/github/downloads/dedeadend/DTerminal/total?style=for-the-badge&color=green&logo=github" />
+  <img src="https://img.shields.io/github/v/release/dedeadend/DTerminal?style=for-the-badge&color=green&logo=android" />
+  <img src="https://img.shields.io/github/downloads/dedeadend/DTerminal/total?style=for-the-badge&color=orange&logo=github" />
   <img src="https://komarev.com/ghpvc/?username=dedeadend&repo=DTerminal&label=VIEWS&color=blue&style=for-the-badge" />
-  <img src="https://img.shields.io/github/license/dedeadend/DTerminal?style=for-the-badge&color=white" />
+  <img src="https://img.shields.io/github/license/dedeadend/DTerminal?style=for-the-badge&color=yellow" />
 </p>
 
 # 🍃 DTerminal
