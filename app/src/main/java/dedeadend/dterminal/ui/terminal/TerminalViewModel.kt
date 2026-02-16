@@ -8,19 +8,15 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dedeadend.dterminal.data.Repository
 import dedeadend.dterminal.domain.CommandExecutor
-import dedeadend.dterminal.domain.History
 import dedeadend.dterminal.domain.SystemSettings
 import dedeadend.dterminal.domain.TerminalLog
 import dedeadend.dterminal.domain.TerminalState
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 
@@ -53,7 +49,7 @@ class TerminalViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(ioDispatcher) {
-            if (repository.getSystemSettings().first().isFirstBoot == true) {
+            if (repository.getSystemSettings().first().isFirstBoot) {
                 showWelcomeMessage()
                 repository.setFirstBootCompleted()
             }
@@ -79,41 +75,24 @@ class TerminalViewModel @Inject constructor(
     }
 
     fun execute() {
-        if (command.trim().isEmpty())
+        if (command.trim().isEmpty() || state != TerminalState.Idle)
             return
         state = TerminalState.Running
-        val cmd = command.trim()
-        command = ""
-        viewModelScope.launch(ioDispatcher) {
-            repository.addHistory(History(cmd))
-            repository.addLog(
-                TerminalLog(
-                    TerminalState.Info,
-                    (if (isRoot) "#: " else "$: ") + cmd
-                )
-            )
+        viewModelScope.launch {
+            val cmd = command.trim()
+            command = ""
             try {
-                commandExecutor.execute(cmd, isRoot).collect { log ->
-                    repository.addLog(log)
-                }
-            } catch (e: Exception) {
-                repository.addLog(
-                    TerminalLog(
-                        TerminalState.Error,
-                        e.message ?: "Unknown error"
-                    )
-                )
+                commandExecutor.execute(cmd, isRoot)
+            } catch (_: Exception) {
             } finally {
-                withContext(NonCancellable + Dispatchers.Main) {
-                    state = TerminalState.Idle
-                }
+                state = TerminalState.Idle
             }
         }
     }
 
     fun terminate() =
-        viewModelScope.launch(ioDispatcher) {
-            repository.addLog(commandExecutor.cancel())
+        viewModelScope.launch {
+            commandExecutor.cancel()
         }
 
     private suspend fun showWelcomeMessage() {

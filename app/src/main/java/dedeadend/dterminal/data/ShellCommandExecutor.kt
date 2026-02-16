@@ -3,16 +3,13 @@ package dedeadend.dterminal.data
 import android.os.Build
 import android.os.SystemClock
 import dedeadend.dterminal.domain.CommandExecutor
+import dedeadend.dterminal.domain.History
 import dedeadend.dterminal.domain.TerminalLog
 import dedeadend.dterminal.domain.TerminalState
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -23,34 +20,43 @@ class ShellCommandExecutor @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) : CommandExecutor {
     private var process: Process? = null
-    override suspend fun execute(command: String, isRoot: Boolean): Flow<TerminalLog> =
-        callbackFlow {
-            process = ProcessBuilder(if (isRoot) "su" else "sh")
-                .redirectErrorStream(true)
-                .start()
-            launch(ioDispatcher) {
-                process?.outputStream?.bufferedWriter()?.use { writer ->
-                    command.lines().forEach { cmd ->
-                        if (cmd.trim().isNotBlank()) {
-                            if (!executedAsCustomCommand(repository, cmd)) {
-                                writer.write(cmd + "\n")
-                                writer.flush()
+    override suspend fun execute(command: String, isRoot: Boolean) {
+        withContext(ioDispatcher) {
+            repository.addHistory(History(command))
+            repository.addLog(
+                TerminalLog(
+                    TerminalState.Info,
+                    (if (isRoot) "#: " else "$: ") + command
+                )
+            )
+            try {
+                process = ProcessBuilder(if (isRoot) "su" else "sh")
+                    .redirectErrorStream(true)
+                    .start()
+                launch {
+                    process?.outputStream?.bufferedWriter()?.use { writer ->
+                        command.lines().forEach { cmd ->
+                            if (cmd.trim().isNotBlank()) {
+                                if (!executedAsCustomCommand(repository, cmd)) {
+                                    writer.write(cmd + "\n")
+                                    writer.flush()
+                                }
                             }
                         }
+                        writer.write("exit\n")
+                        writer.flush()
                     }
-                    writer.write("exit\n")
-                    writer.flush()
                 }
-            }
-            process?.inputStream?.bufferedReader()?.use { reader ->
-                var line: String?
-                while (reader.readLine().also { line = it } != null) {
-                    trySend(TerminalLog(TerminalState.Success, line!!))
+                process?.inputStream?.bufferedReader()?.use { reader ->
+                    var line: String?
+                    while (reader.readLine().also { line = it } != null) {
+                        repository.addLog(TerminalLog(TerminalState.Success, line!!))
+                    }
                 }
-            }
-            process?.waitFor()
-            channel.close()
-            awaitClose {
+                process?.waitFor()
+            } catch (e: Exception) {
+                repository.addLog(TerminalLog(TerminalState.Error, e.message ?: "Unknown Error"))
+            } finally {
                 process?.let { process ->
                     process.inputStream?.close()
                     process.outputStream?.close()
@@ -59,25 +65,35 @@ class ShellCommandExecutor @Inject constructor(
                 }
                 process = null
             }
-        }.flowOn(Dispatchers.IO)
-
-    override suspend fun cancel(): TerminalLog {
-        process?.let { process ->
-            val pid = getPid()
-            if (pid != -1) {
-                Runtime.getRuntime().exec("pkill -P $pid")
-            }
-            process.destroy()
-            if (!process.waitFor(1000, TimeUnit.MILLISECONDS)) {
-                process.destroyForcibly()
-                process.waitFor()
-            }
-            process.inputStream.close()
-            process.outputStream.close()
-            process.errorStream.close()
-            return TerminalLog(TerminalState.Error, "Process terminated by user")
         }
-        return TerminalLog(TerminalState.Error, "There is no active process")
+    }
+
+    override suspend fun cancel() {
+        withContext(ioDispatcher) {
+            if (process == null) {
+                repository.addLog(
+                    TerminalLog(TerminalState.Error, "There is no active process")
+                )
+            }
+            process?.let { process ->
+                val pid = getPid()
+                if (pid != -1) {
+                    Runtime.getRuntime().exec("pkill -P $pid")
+                }
+                process.destroy()
+                if (!process.waitFor(1000, TimeUnit.MILLISECONDS)) {
+                    process.destroyForcibly()
+                    process.waitFor()
+                }
+                process.inputStream.close()
+                process.outputStream.close()
+                process.errorStream.close()
+                repository.addLog(
+                    TerminalLog(TerminalState.Error, "Process terminated by user")
+                )
+            }
+            process = null
+        }
     }
 
     private fun getPid(): Int {

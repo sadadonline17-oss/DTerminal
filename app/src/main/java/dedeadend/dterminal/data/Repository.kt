@@ -84,7 +84,7 @@ class Repository @Inject constructor(
         )
     }
 
-    suspend fun setLogFontSize(size: Int) = withContext(ioDispatcher){
+    suspend fun setLogFontSize(size: Int) = withContext(ioDispatcher) {
         val currentSettings = getSystemSettings().first()
         systemSettingsDao.updateSettings(currentSettings.copy(logFontSize = size))
     }

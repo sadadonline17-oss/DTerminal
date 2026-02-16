@@ -196,12 +196,14 @@ private fun OutputItem(output: TerminalLog, systemSettings: SystemSettings) {
                         else
                             Color(systemSettings.logInfoFontColor)
                     }
+
                     TerminalState.Error -> {
                         if (systemSettings.logErrorFontColor == -1)
                             ErrorTextColor
                         else
                             Color(systemSettings.logErrorFontColor)
                     }
+
                     else -> {
                         if (systemSettings.logSuccessFontColor == -1)
                             MaterialTheme.colorScheme.onSurface
