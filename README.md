@@ -1,3 +1,5 @@
+![Downloads](https://img.shields.io/github/downloads/dedeadend/DTerminal/total?style=for-the-badge&color=green)
+
 # DTerminal
 
 A Modern, Customizable Android Terminal Emulator built with Jetpack Compose.
@@ -31,11 +33,11 @@ DTerminal is a high-performance terminal emulator designed for Android developer
 
 #### Installation
 
-1. Download last relased APK from hear.
+1. Download last relased APK from [Here](https://github.com/dedeadend/DTerminal/releases/latest).
 2. Install downloaded APK file.
 3. Enjoy 💚
 
-#### Note
+## 📌 Note
 
 Maybe see the Google Play Protect warning while installing the APK. This warning is shown because my app was recently released. This will fix automatically after a while.
 
