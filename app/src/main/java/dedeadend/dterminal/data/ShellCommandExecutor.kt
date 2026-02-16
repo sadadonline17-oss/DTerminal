@@ -238,7 +238,7 @@ class ShellCommandExecutor @Inject constructor(
                         val green = parts[2].toInt()
                         val blue = parts[3].toInt()
                         if (red in 0..255 && green in 0..255 && blue in 0..255) {
-                            repository.setLogSuccessFontColor(red, green, blue)
+                            repository.setLogErrorFontColor(red, green, blue)
                             repository.addLog(
                                 TerminalLog(
                                     TerminalState.Success,
@@ -281,7 +281,7 @@ class ShellCommandExecutor @Inject constructor(
                 val parts = command.trim().split("\\s+".toRegex())
                 if (parts.size == 2) {
                     if (parts[1] == "def") {
-                        repository.setLogSuccessFontColor(-1, -1, -1)
+                        repository.setLogInfoFontColor(-1, -1, -1)
                         repository.addLog(
                             TerminalLog(
                                 TerminalState.Success,
@@ -304,7 +304,7 @@ class ShellCommandExecutor @Inject constructor(
                         val green = parts[2].toInt()
                         val blue = parts[3].toInt()
                         if (red in 0..255 && green in 0..255 && blue in 0..255) {
-                            repository.setLogSuccessFontColor(red, green, blue)
+                            repository.setLogInfoFontColor(red, green, blue)
                             repository.addLog(
                                 TerminalLog(
                                     TerminalState.Success,
