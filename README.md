@@ -7,7 +7,7 @@
 
 # 🍃 DTerminal
 
-A Modern, Customizable Android Terminal Emulator built with Jetpack Compose.
+A Modern and Customizable Android Terminal Emulator built with Jetpack Compose.
 
 DTerminal is a high-performance terminal emulator designed for Android developers and power users. It provides a clean, reactive interface to interact with the system shell (`sh`) or root shell (`su`), featuring a robust architecture and extensive UI customization options.
 
