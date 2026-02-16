@@ -114,22 +114,39 @@ class ShellCommandExecutor @Inject constructor(
 
             "help" -> {
                 val helpText = """
-                DTerminal Commands:
-                -------------------
-                - help:  Show this list
-                - about:  Information about DTerminal
-                - color1 [r] [g] [b]:  Set the Normal log font color
-                - color2 [r] [g] [b]:  Set the Error log font color
-                - color3 [r] [g] [b]:  Set the Info log font color
-                - font [size]:  Set the log font size
-                - random [a] [b]:  Get a random number between a and b
-                - clear/cls:  Clear the terminal logs
-                - echo [a]:  Echo a message
-                - sysinfo:  Information about your device
-                - whoami:  Get your username
-                - date:  Get the current date and time
-                - sudo [command]:  Execute a command as root
-            """.trimIndent()
+                    [ DTerminal Help Menu ]
+                    -----------------------
+                    
+                    System Commands
+                    ---------------
+                    help             [Show this list of commands]
+                    about            [Display app information]
+                    clear/cls        [Clear all terminal logs]
+                    sysinfo          [Display device and OS details]
+                    whoami           [Show current user identity]
+                    date             [Show current date and time]
+                    echo [text]      [Print a message to the screen]
+                    random [a] [b]   [Generate a random number between a and b]
+                    sudo [cmd]       [Run a specific command with root privileges]
+                
+                    UI Customization
+                    ----------------
+                    font [size]      [Set terminal font size]
+                    color1 [r g b]   [Set Normal text color (RGB)]
+                    color2 [r g b]   [Set Error text color (RGB)]
+                    color3 [r g b]   [Set Info text color (RGB)]
+                    Note: You can use [def] to set default value.
+                    e.g. color1 def
+                    
+                    -----------------------
+                    Hint: Standard shell commands (ls, cd, ping, etc.) are supported.
+                    Note: Each execution runs in an isolated process. So you must combine 
+                    related commands in a single execution.
+                    e.g. Type:
+                           cd /sdcard
+                           ls
+                         Then execute both lines at once.
+                """.trimIndent()
                 repository.addLog(TerminalLog(TerminalState.Success, helpText))
                 return true
             }
@@ -161,7 +178,7 @@ class ShellCommandExecutor @Inject constructor(
                 return true
             }
 
-            "color1" -> {
+            "color", "color1" -> {
                 val parts = command.trim().split("\\s+".toRegex())
                 if (parts.size == 2) {
                     if (parts[1] == "def") {
