@@ -38,7 +38,7 @@ DTerminal is a high-performance terminal emulator designed for Android developer
 
 #### Installation
 
-1. Download the latest released APK from [Here](https://github.com/dedeadend/DTerminal/releases/latest).
+1. Download the latest released APK from the [Releases Page](https://github.com/dedeadend/DTerminal/releases/latest).
 2. Install downloaded APK file.
 3. Enjoy 💚
 
