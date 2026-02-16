@@ -1,4 +1,4 @@
-# 📟 DTerminal
+# DTerminal
 
 A Modern, Customizable Android Terminal Emulator built with Jetpack Compose.
 
@@ -19,7 +19,6 @@ DTerminal is a high-performance terminal emulator designed for Android developer
 |:---:|:---:|
 | <img src="screenshots/main_screen.png" width="350"> | <img src="screenshots/settings_screen.png" width="350"> |
 
-*Place your screenshots in the `/screenshots` directory of the repository.*
 
 ## 🛠 Tech Stack
 
@@ -50,20 +49,38 @@ DTerminal extends standard shell functionality with integrated custom commands:
 
 ## 📥 Getting Started
 
-### Prerequisites
+#### Prerequisites
 
 - Android 8.0+ "Oreo"
 - (Optional) Root access for su commands
 
-### Installation
+#### Installation
 
 1. Download last relased APK from hear.
 2. Install downloaded APK file.
 3. Enjoy 💚
 
-### Note
+#### Note
 
 Maybe see the Google Play Protect warning while installing the APK. This warning is shown because my app was recently released. This will fix automatically after a while.
+
+
+## ♠️Support
+You can find me at</h4>
+
+<div align="left">
+  <a href="https://t.me/dedeadend" target="_blank">
+    <img src="https://img.shields.io/static/v1?message=Telegram&logo=telegram&label=&color=2CA5E0&logoColor=white&labelColor=&style=for-the-badge" height="30" alt="telegram logo"  />
+  </a>
+</div>
+
+## ❤️ Donation
+You can buy for me a coffeeshop :)
+<div align="left">
+  <a href="https://nowpayments.io/donation/dedeadend" target="_blank" rel="noreferrer noopener">
+     <img src="https://nowpayments.io/images/embeds/donation-button-black.svg" height="35" alt="Crypto donation button by NOWPayments">
+  </a>
+</div>
 
 ## 🤝 Contributing
 
@@ -77,7 +94,7 @@ Contributions are what make the open-source community such an amazing place to l
 
 ## 📄 License
 
-Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
+Distributed under the GPL-3.0 License. See [LICENSE](LICENSE) for more information.
 
 ---
 
