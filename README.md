@@ -89,6 +89,7 @@ Contributions are what make the open-source community such an amazing place to l
 
 
 ## ♠️Support
+
 You can find me at
 
 <div align="left">
@@ -99,7 +100,9 @@ You can find me at
 
 
 ## ❤️ Donation
-You can buy for me a coffeeshop :)
+
+If you find this project helpful, you can buy me a coffee
+
 <div align="left">
   <a href="https://nowpayments.io/donation/dedeadend" target="_blank" rel="noreferrer noopener">
      <img src="https://nowpayments.io/images/embeds/donation-button-black.svg" height="35" alt="Crypto donation button by NOWPayments">
