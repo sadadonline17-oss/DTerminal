@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/github/license/dedeadend/DTerminal?style=for-the-badge&color=white" />
 </p>
 
-# DTerminal
+# 🍃 DTerminal
 
 A Modern, Customizable Android Terminal Emulator built with Jetpack Compose.
 
@@ -110,7 +110,7 @@ If you find this project helpful, you can buy me a coffee
 </div>
 
 
-## 📄 License
+## ⚖️ License
 
 Distributed under the GPL-3.0 License. See [LICENSE](LICENSE) for more information.
 
