@@ -63,10 +63,24 @@ class Repository @Inject constructor(
         systemSettingsDao.updateSettings(currentSettings.copy(isFirstBoot = false))
     }
 
-    suspend fun setLogFontColor(r: Int, g: Int, b: Int) = withContext(ioDispatcher) {
+    suspend fun setLogSuccessFontColor(r: Int, g: Int, b: Int) = withContext(ioDispatcher) {
         val currentSettings = getSystemSettings().first()
         systemSettingsDao.updateSettings(
-            currentSettings.copy(logFontColor = Color(r, g, b).toArgb())
+            currentSettings.copy(logSuccessFontColor = Color(r, g, b).toArgb())
+        )
+    }
+
+    suspend fun setLogErrorFontColor(r: Int, g: Int, b: Int) = withContext(ioDispatcher) {
+        val currentSettings = getSystemSettings().first()
+        systemSettingsDao.updateSettings(
+            currentSettings.copy(logErrorFontColor = Color(r, g, b).toArgb())
+        )
+    }
+
+    suspend fun setLogInfoFontColor(r: Int, g: Int, b: Int) = withContext(ioDispatcher) {
+        val currentSettings = getSystemSettings().first()
+        systemSettingsDao.updateSettings(
+            currentSettings.copy(logInfoFontColor = Color(r, g, b).toArgb())
         )
     }
 

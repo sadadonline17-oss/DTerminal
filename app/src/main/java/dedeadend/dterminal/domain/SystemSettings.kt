@@ -6,7 +6,9 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "system_settings")
 data class SystemSettings(
     val isFirstBoot: Boolean = true,
-    val logFontColor: Int = -1,
+    val logSuccessFontColor: Int = -1,
+    val logErrorFontColor: Int = -1,
+    val logInfoFontColor: Int = -1,
     val logFontSize: Int = 12,
     @PrimaryKey val id: Int = 1
 )

@@ -6,6 +6,7 @@ import dedeadend.dterminal.domain.CommandExecutor
 import dedeadend.dterminal.domain.TerminalLog
 import dedeadend.dterminal.domain.TerminalState
 import jakarta.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +19,8 @@ import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 class ShellCommandExecutor @Inject constructor(
-    private val repository: Repository
+    private val repository: Repository,
+    private val ioDispatcher: CoroutineDispatcher
 ) : CommandExecutor {
     private var process: Process? = null
     override suspend fun execute(command: String, isRoot: Boolean): Flow<TerminalLog> =
@@ -26,7 +28,7 @@ class ShellCommandExecutor @Inject constructor(
             process = ProcessBuilder(if (isRoot) "su" else "sh")
                 .redirectErrorStream(true)
                 .start()
-            launch(Dispatchers.IO) {
+            launch(ioDispatcher) {
                 process?.outputStream?.bufferedWriter()?.use { writer ->
                     command.lines().forEach { cmd ->
                         if (cmd.trim().isNotBlank()) {
@@ -96,13 +98,13 @@ class ShellCommandExecutor @Inject constructor(
 
             "help" -> {
                 val helpText = """
-                    
-                    
                 DTerminal Commands:
                 -------------------
                 - help:  Show this list
                 - about:  Information about DTerminal
-                - color [r] [g] [b]:  Set the log font color
+                - color1 [r] [g] [b]:  Set the Normal log font color
+                - color2 [r] [g] [b]:  Set the Error log font color
+                - color3 [r] [g] [b]:  Set the Info log font color
                 - font [size]:  Set the log font size
                 - random [a] [b]:  Get a random number between a and b
                 - clear/cls:  Clear the terminal logs
@@ -111,8 +113,6 @@ class ShellCommandExecutor @Inject constructor(
                 - whoami:  Get your username
                 - date:  Get the current date and time
                 - sudo [command]:  Execute a command as root
-                
-                
             """.trimIndent()
                 repository.addLog(TerminalLog(TerminalState.Success, helpText))
                 return true
@@ -120,7 +120,6 @@ class ShellCommandExecutor @Inject constructor(
 
             "about" -> {
                 val aboutText = """
-                        
                         
                      _____  _____                   _              _ 
                     |  _  \|_   _|                 (_)            | |
@@ -141,25 +140,29 @@ class ShellCommandExecutor @Inject constructor(
                     
                     
                     -------------------------------------------------
-                    
-                    
                 """.trimIndent()
                 repository.addLog(TerminalLog(TerminalState.Success, aboutText))
                 return true
             }
 
-            "color" -> {
+            "color1" -> {
                 val parts = command.trim().split("\\s+".toRegex())
                 if (parts.size == 2) {
                     if (parts[1] == "def") {
-                        repository.setLogFontColor(-1, -1, -1)
+                        repository.setLogSuccessFontColor(-1, -1, -1)
+                        repository.addLog(
+                            TerminalLog(
+                                TerminalState.Success,
+                                "Color set successfully."
+                            )
+                        )
                     } else {
                         repository.addLog(
                             TerminalLog(
                                 TerminalState.Error,
-                                "Usage: color [red] [green] [blue]\n" +
-                                        "Example: color 250 140 0\n" +
-                                        "Default: color def"
+                                "Usage: color1 [red] [green] [blue]\n" +
+                                        "Example: color1 250 140 0\n" +
+                                        "Default: color1 def"
                             )
                         )
                     }
@@ -169,7 +172,7 @@ class ShellCommandExecutor @Inject constructor(
                         val green = parts[2].toInt()
                         val blue = parts[3].toInt()
                         if (red in 0..255 && green in 0..255 && blue in 0..255) {
-                            repository.setLogFontColor(red, green, blue)
+                            repository.setLogSuccessFontColor(red, green, blue)
                             repository.addLog(
                                 TerminalLog(
                                     TerminalState.Success,
@@ -189,9 +192,9 @@ class ShellCommandExecutor @Inject constructor(
                         repository.addLog(
                             TerminalLog(
                                 TerminalState.Error,
-                                "Usage: color [red] [green] [blue]\n" +
-                                        "Example: color 250 140 0\n" +
-                                        "Default: color def"
+                                "Usage: color1 [red] [green] [blue]\n" +
+                                        "Example: color1 250 140 0\n" +
+                                        "Default: color1 def"
                             )
                         )
                     }
@@ -199,9 +202,141 @@ class ShellCommandExecutor @Inject constructor(
                     repository.addLog(
                         TerminalLog(
                             TerminalState.Error,
-                            "Usage: color [red] [green] [blue]\n" +
-                                    "Example: color 250 140 0\n" +
-                                    "Default: color def"
+                            "Usage: color1 [red] [green] [blue]\n" +
+                                    "Example: color1 250 140 0\n" +
+                                    "Default: color1 def"
+                        )
+                    )
+                }
+                return true
+            }
+
+            "color2" -> {
+                val parts = command.trim().split("\\s+".toRegex())
+                if (parts.size == 2) {
+                    if (parts[1] == "def") {
+                        repository.setLogErrorFontColor(-1, -1, -1)
+                        repository.addLog(
+                            TerminalLog(
+                                TerminalState.Success,
+                                "Color set successfully."
+                            )
+                        )
+                    } else {
+                        repository.addLog(
+                            TerminalLog(
+                                TerminalState.Error,
+                                "Usage: color2 [red] [green] [blue]\n" +
+                                        "Example: color2 250 140 0\n" +
+                                        "Default: color2 def"
+                            )
+                        )
+                    }
+                } else if (parts.size == 4) {
+                    try {
+                        val red = parts[1].toInt()
+                        val green = parts[2].toInt()
+                        val blue = parts[3].toInt()
+                        if (red in 0..255 && green in 0..255 && blue in 0..255) {
+                            repository.setLogSuccessFontColor(red, green, blue)
+                            repository.addLog(
+                                TerminalLog(
+                                    TerminalState.Success,
+                                    "Color set successfully."
+                                )
+                            )
+                        } else {
+                            repository.addLog(
+                                TerminalLog(
+                                    TerminalState.Error,
+                                    "Invalid color values.\n" +
+                                            "Note: Values must be between 0 and 255."
+                                )
+                            )
+                        }
+                    } catch (_: NumberFormatException) {
+                        repository.addLog(
+                            TerminalLog(
+                                TerminalState.Error,
+                                "Usage: color2 [red] [green] [blue]\n" +
+                                        "Example: color2 250 140 0\n" +
+                                        "Default: color2 def"
+                            )
+                        )
+                    }
+                } else {
+                    repository.addLog(
+                        TerminalLog(
+                            TerminalState.Error,
+                            "Usage: color2 [red] [green] [blue]\n" +
+                                    "Example: color2 250 140 0\n" +
+                                    "Default: color2 def"
+                        )
+                    )
+                }
+                return true
+            }
+
+            "color3" -> {
+                val parts = command.trim().split("\\s+".toRegex())
+                if (parts.size == 2) {
+                    if (parts[1] == "def") {
+                        repository.setLogSuccessFontColor(-1, -1, -1)
+                        repository.addLog(
+                            TerminalLog(
+                                TerminalState.Success,
+                                "Color set successfully."
+                            )
+                        )
+                    } else {
+                        repository.addLog(
+                            TerminalLog(
+                                TerminalState.Error,
+                                "Usage: color3 [red] [green] [blue]\n" +
+                                        "Example: color3 250 140 0\n" +
+                                        "Default: color3 def"
+                            )
+                        )
+                    }
+                } else if (parts.size == 4) {
+                    try {
+                        val red = parts[1].toInt()
+                        val green = parts[2].toInt()
+                        val blue = parts[3].toInt()
+                        if (red in 0..255 && green in 0..255 && blue in 0..255) {
+                            repository.setLogSuccessFontColor(red, green, blue)
+                            repository.addLog(
+                                TerminalLog(
+                                    TerminalState.Success,
+                                    "Color set successfully."
+                                )
+                            )
+                        } else {
+                            repository.addLog(
+                                TerminalLog(
+                                    TerminalState.Error,
+                                    "Invalid color values.\n" +
+                                            "Note: Values must be between 0 and 255."
+                                )
+                            )
+                        }
+                    } catch (_: NumberFormatException) {
+                        repository.addLog(
+                            TerminalLog(
+                                TerminalState.Error,
+                                "Usage: color3 [red] [green] [blue]\n" +
+                                        "Example: color3 250 140 0\n" +
+                                        "Default: color3 def"
+                            )
+                        )
+                    }
+                } else {
+                    repository.addLog(
+                        TerminalLog(
+                            TerminalState.Error,
+                            "Usage: color3 [red] [green] [blue]\n" +
+                                    "Example: color3 250 140 0\n" +
+                                    "Default: color3 def"
                         )
                     )
                 }
@@ -319,10 +454,9 @@ class ShellCommandExecutor @Inject constructor(
                 val seconds = (upTime / 1000) % 60
                 val uptimeString = String.format(
                     Locale.getDefault(),
-                    "up %02d:%02d:%02d", hours, minutes, seconds
+                    "%02d:%02d:%02d", hours, minutes, seconds
                 )
                 val info = """
-                    
                     [ DEVICE INFORMATION ]
                     ----------------------
                     Manufacturer : ${manufacturer.uppercase()}
@@ -340,8 +474,6 @@ class ShellCommandExecutor @Inject constructor(
                     [ SYSTEM ]
                     ----------
                     Uptime: $uptimeString
-                    
-                    
                 """.trimIndent()
 
                 repository.addLog(TerminalLog(TerminalState.Success, info))

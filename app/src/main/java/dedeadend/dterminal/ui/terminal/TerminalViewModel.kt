@@ -82,9 +82,9 @@ class TerminalViewModel @Inject constructor(
         if (command.trim().isEmpty())
             return
         state = TerminalState.Running
+        val cmd = command.trim()
+        command = ""
         viewModelScope.launch(ioDispatcher) {
-            val cmd = command.trim()
-            command = ""
             repository.addHistory(History(cmd))
             repository.addLog(
                 TerminalLog(
@@ -147,10 +147,10 @@ class TerminalViewModel @Inject constructor(
 
 fun terminalLog2String(terminalLog: TerminalLog): String {
     return if (terminalLog.state == TerminalState.Info)
-        "\n\n" + SimpleDateFormat(
+        "\n\n\n" + SimpleDateFormat(
             "yyyy-MM-dd HH:mm:ss",
             java.util.Locale.getDefault()
-        ).format(terminalLog.date) + "\n" + terminalLog.message
+        ).format(terminalLog.date) + "\n" + terminalLog.message + "\n"
     else
         terminalLog.message
 

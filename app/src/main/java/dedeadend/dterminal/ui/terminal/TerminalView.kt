@@ -190,10 +190,24 @@ private fun OutputItem(output: TerminalLog, systemSettings: SystemSettings) {
                 lineHeight = (systemSettings.logFontSize + 5).sp,
                 textAlign = TextAlign.Left,
                 color = when (output.state) {
-                    TerminalState.Info -> InfoTextColor
-                    TerminalState.Error -> ErrorTextColor
-                    else -> if (systemSettings.logFontColor != -1) Color(systemSettings.logFontColor)
-                    else MaterialTheme.colorScheme.onSurface
+                    TerminalState.Info -> {
+                        if (systemSettings.logInfoFontColor == -1)
+                            InfoTextColor
+                        else
+                            Color(systemSettings.logInfoFontColor)
+                    }
+                    TerminalState.Error -> {
+                        if (systemSettings.logErrorFontColor == -1)
+                            ErrorTextColor
+                        else
+                            Color(systemSettings.logErrorFontColor)
+                    }
+                    else -> {
+                        if (systemSettings.logSuccessFontColor == -1)
+                            MaterialTheme.colorScheme.onSurface
+                        else
+                            Color(systemSettings.logSuccessFontColor)
+                    }
                 }
             )
         )
