@@ -121,9 +121,6 @@ class ShellCommandExecutor @Inject constructor(
                     about            [Display app information]
                     clear/cls        [Clear all terminal logs]
                     sysinfo          [Display device and OS details]
-                    whoami           [Show current user identity]
-                    date             [Show current date and time]
-                    echo [text]      [Print a message to the screen]
                     random [a] [b]   [Generate a random number between a and b]
                     sudo [cmd]       [Run a specific command with root privileges]
                 
