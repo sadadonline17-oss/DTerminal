@@ -458,22 +458,6 @@ class ShellCommandExecutor @Inject constructor(
                 return true
             }
 
-            "echo" -> {
-                if (command.split(" ").size > 1) {
-                    val message = command.substringAfter(" ").trim()
-                    repository.addLog(TerminalLog(TerminalState.Success, message))
-                } else {
-                    repository.addLog(
-                        TerminalLog(
-                            TerminalState.Error,
-                            "Usage: echo [a]\n" +
-                                    "Example: echo Hello DTerminal!"
-                        )
-                    )
-                }
-                return true
-            }
-
             "sysinfo" -> {
                 val manufacturer = Build.MANUFACTURER
                 val model = Build.MODEL
@@ -513,25 +497,11 @@ class ShellCommandExecutor @Inject constructor(
                 return true
             }
 
-            "whoami" -> {
-                val userName = "dterminal"
-                val deviceName = Build.MODEL.lowercase().replace(" ", "_")
-                repository.addLog(TerminalLog(TerminalState.Success, "$userName@$deviceName"))
-                return true
-            }
-
-            "date" -> {
-                val formatter = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.getDefault())
-                val currentDate = formatter.format(Date())
-                repository.addLog(TerminalLog(TerminalState.Success, currentDate))
-                return true
-            }
-
             "sudo" -> {
                 repository.addLog(
                     TerminalLog(
                         TerminalState.Success,
-                        "Nice try! But you have no power here :)"
+                        "Nice try! But you have no power here :)\n[Use su or switch to root mode]"
                     )
                 )
                 return true
