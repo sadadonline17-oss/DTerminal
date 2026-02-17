@@ -62,9 +62,6 @@ DTerminal extends standard shell functionality with integrated custom commands:
 | `about` | `about` | Information about DTerminal |
 | `clear/cls` | `clear` | Clear all terminal logs |
 | `sysinfo` | `sysinfo` | Display device and OS details |
-| `whoami` | `whoami` | Show current user identity |
-| `date` | `date` | Show current date and time |
-| `echo` | `echo <text>` | Print a message to the screen |
 | `random` | `random <a> <b>` | Generate a random number between a and b |
 | `sudo` | `sudo <cmd>` | Run a specific command with root privileges |
 | `font` | `font <size>` | Set terminal font size |
