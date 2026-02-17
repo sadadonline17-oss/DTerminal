@@ -1,13 +1,17 @@
 <p align="center">
-  <img src="https://img.shields.io/github/v/release/dedeadend/DTerminal?style=for-the-badge&color=orange&logo=android" />
-  <img src="https://img.shields.io/github/downloads/dedeadend/DTerminal/total?style=for-the-badge&color=green&logo=github" />
-  <img src="https://komarev.com/ghpvc/?username=dedeadend&repo=DTerminal&label=VIEWS&color=blue&style=for-the-badge" />
-  <img src="https://img.shields.io/github/license/dedeadend/DTerminal?style=for-the-badge&color=white" />
+  <img src="https://raw.githubusercontent.com/dedeadend/DTerminal/master/DTerminalBanner.png" alt="DTerminal Banner" width="100%">
 </p>
 
-# DTerminal
+<p align="center">
+  <img src="https://img.shields.io/github/v/release/dedeadend/DTerminal?style=for-the-badge&color=green&logo=android" />
+  <img src="https://img.shields.io/github/downloads/dedeadend/DTerminal/total?style=for-the-badge&color=orange&logo=github" />
+  <img src="https://komarev.com/ghpvc/?username=dedeadend&repo=DTerminal&label=VIEWS&color=blue&style=for-the-badge" />
+  <img src="https://img.shields.io/github/license/dedeadend/DTerminal?style=for-the-badge&color=yellow" />
+</p>
 
-A Modern, Customizable Android Terminal Emulator built with Jetpack Compose.
+# 🍃 DTerminal
+
+A Modern and Customizable Android Terminal Emulator built with Jetpack Compose.
 
 DTerminal is a high-performance terminal emulator designed for Android developers and power users. It provides a clean, reactive interface to interact with the system shell (`sh`) or root shell (`su`), featuring a robust architecture and extensive UI customization options.
 
@@ -38,7 +42,7 @@ DTerminal is a high-performance terminal emulator designed for Android developer
 
 #### Installation
 
-1. Download the latest released APK from [Here](https://github.com/dedeadend/DTerminal/releases/latest).
+1. Download the latest released APK from the [Releases Page](https://github.com/dedeadend/DTerminal/releases/latest).
 2. Install downloaded APK file.
 3. Enjoy 💚
 
@@ -58,9 +62,6 @@ DTerminal extends standard shell functionality with integrated custom commands:
 | `about` | `about` | Information about DTerminal |
 | `clear/cls` | `clear` | Clear all terminal logs |
 | `sysinfo` | `sysinfo` | Display device and OS details |
-| `whoami` | `whoami` | Show current user identity |
-| `date` | `date` | Show current date and time |
-| `echo` | `echo <text>` | Print a message to the screen |
 | `random` | `random <a> <b>` | Generate a random number between a and b |
 | `sudo` | `sudo <cmd>` | Run a specific command with root privileges |
 | `font` | `font <size>` | Set terminal font size |
@@ -79,16 +80,20 @@ DTerminal extends standard shell functionality with integrated custom commands:
 
 ## 🤝 Contributing
 
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. **Fork** the Project
+2. Create your Feature Branch  
+   `git checkout -b feature/AmazingFeature`
+3. **Commit** your Changes  
+   `git commit -m 'Add some AmazingFeature'`
+4. **Push** to the Branch  
+   `git push origin feature/AmazingFeature`
+5. Open a **Pull Request**
 
 
 ## ♠️Support
+
 You can find me at
 
 <div align="left">
@@ -99,7 +104,9 @@ You can find me at
 
 
 ## ❤️ Donation
-You can buy for me a coffeeshop :)
+
+If you find this project helpful, you can buy me a coffee
+
 <div align="left">
   <a href="https://nowpayments.io/donation/dedeadend" target="_blank" rel="noreferrer noopener">
      <img src="https://nowpayments.io/images/embeds/donation-button-black.svg" height="35" alt="Crypto donation button by NOWPayments">
@@ -107,7 +114,7 @@ You can buy for me a coffeeshop :)
 </div>
 
 
-## 📄 License
+## ⚖️ License
 
 Distributed under the GPL-3.0 License. See [LICENSE](LICENSE) for more information.
 
