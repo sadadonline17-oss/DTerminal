@@ -1,4 +1,8 @@
 <p align="center">
+  <img src="https://raw.githubusercontent.com/dedeadend/DTerminal/master/DTerminalBanner.png" alt="DTerminal Banner" width="100%">
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/github/v/release/dedeadend/DTerminal?style=for-the-badge&color=green&logo=android" />
   <img src="https://img.shields.io/github/downloads/dedeadend/DTerminal/total?style=for-the-badge&color=orange&logo=github" />
   <img src="https://komarev.com/ghpvc/?username=dedeadend&repo=DTerminal&label=VIEWS&color=blue&style=for-the-badge" />
