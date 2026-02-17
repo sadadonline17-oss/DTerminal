@@ -130,11 +130,14 @@ class ShellCommandExecutor @Inject constructor(
                     color1 [r g b]   [Set Normal text color (RGB)]
                     color2 [r g b]   [Set Error text color (RGB)]
                     color3 [r g b]   [Set Info text color (RGB)]
+                    
                     Note: You can use [def] to set default value.
                     e.g. color1 def
                     
+                    
                     -----------------------
                     Hint: Standard shell commands (ls, cd, ping, etc.) are supported.
+                    
                     Note: Each execution runs in an isolated process. So you must combine 
                     related commands in a single execution.
                     e.g. Type:
