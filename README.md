@@ -11,19 +11,23 @@
 
 # 🍃 DTerminal
 
-A Modern and Customizable Android Terminal Emulator built with Jetpack Compose.
+**A next-generation terminal emulator for Android that redefines the mobile shell experience.**
 
-DTerminal is a high-performance terminal emulator designed for Android developers and power users. It provides a clean, reactive interface to interact with the system shell (`sh`) or root shell (`su`), featuring a robust architecture and extensive UI customization options.
+Built from the ground up with **Jetpack Compose**, DTerminal combines the raw power of standard and root shells with a lightning-fast, minimalist interface. It’s the perfect balance of s1mple aesthetics and professional power.
 
 
-## ✨ Features
+## ⚡ Fast by Design, Modern by Tech
 
-- 🚀 **Asynchronous Execution**: Powered by Kotlin Coroutines for a lag-free UI.
-- 🔓 **Root Support**: Seamlessly switch between standard and root shells.
-- 🎨 **Dynamic Customization**: Adjust font size and terminal colors in real-time.
-- 💫 **Command History**: Persistent history storage for quick access to previous commands.
-- 📜 **Custom Script**: Persistent script storage to save and execute your custom commands easily.
-- 🛠 **Internal Commands**: Built-in support for `font`, `color`, `sysinfo` and more.
+Forget clunky, dated terminal interfaces. DTerminal is engineered for **instant startups and fluid interaction**. With its reactive UI and asynchronous command engine, you get a high-performance environment that responds without a millisecond of lag.
+
+
+## ✨ Key Features
+
+- 🔓 **Full Shell Authority**: High-speed execution for both standard (sh) and root (su) commands.
+- 💾 **Persistent Scripting**: A smart workspace to save and execute your custom scripts, eliminating repetitive mobile typing.
+- 🎨 **Real-time Modern UI**: Instant, reactive customization of fonts and colors—see your changes as you type.
+- 🚀 **Ultra-Lightweight**: Optimized for speed and low battery consumption using the latest Material 3 standards.
+- 📜 **Smart History**: Persistent access to your command history in a clean, organized layout.
 
 
 ## 📸 Screenshots
