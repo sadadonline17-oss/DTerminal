@@ -121,8 +121,8 @@ class ShellCommandExecutor @Inject constructor(
                     about            [Display app information]
                     clear/cls        [Clear all terminal logs]
                     sysinfo          [Display device and OS details]
+                    sudo [cmd]       [Run a command with root privileges]
                     random [a] [b]   [Generate a random number between a and b]
-                    sudo [cmd]       [Run a specific command with root privileges]
                 
                     UI Customization
                     ----------------
@@ -138,8 +138,7 @@ class ShellCommandExecutor @Inject constructor(
                     -----------------------
                     Hint: Standard shell commands (ls, cd, ping, etc.) are supported.
                     
-                    Note: Each execution runs in an isolated process. So you must combine 
-                    related commands in a single execution.
+                    Note: Each execution runs in an isolated process. So you must combine related commands in a single execution.
                     e.g. Type:
                            cd /sdcard
                            ls
@@ -161,7 +160,7 @@ class ShellCommandExecutor @Inject constructor(
                                                     
                                                           
                                                                       
-                    ♠️ DTerminal v1.1 - Created by Ehsan Nasiri. 
+                    ♠️ DTerminal v1.2 - Created by Ehsan Nasiri. 
                     
                     🌐 Open Source on GitHub: github.com/dedeadend
                     
@@ -377,40 +376,52 @@ class ShellCommandExecutor @Inject constructor(
             "font" -> {
                 val parts = command.trim().split("\\s+".toRegex())
                 if (parts.size == 2) {
-                    try {
-                        val fontSize = parts[1].toInt()
-                        if (fontSize in 5..25) {
-                            repository.setLogFontSize(fontSize)
-                            repository.addLog(
-                                TerminalLog(
-                                    TerminalState.Success,
-                                    "Font size set successfully."
-                                )
+                    if (parts[1] == "def") {
+                        repository.setLogFontSize(11)
+                        repository.addLog(
+                            TerminalLog(
+                                TerminalState.Success,
+                                "Font size set successfully."
                             )
-                        } else {
+                        )
+                    } else {
+                        try {
+                            val fontSize = parts[1].toInt()
+                            if (fontSize in 5..25) {
+                                repository.setLogFontSize(fontSize)
+                                repository.addLog(
+                                    TerminalLog(
+                                        TerminalState.Success,
+                                        "Font size set successfully."
+                                    )
+                                )
+                            } else {
+                                repository.addLog(
+                                    TerminalLog(
+                                        TerminalState.Error,
+                                        "Invalid font size value.\n" +
+                                                "Note: Value must be between 5 and 25."
+                                    )
+                                )
+                            }
+                        } catch (_: NumberFormatException) {
                             repository.addLog(
                                 TerminalLog(
                                     TerminalState.Error,
-                                    "Invalid font size value.\n" +
+                                    "Invalid font value.\n" +
                                             "Note: Value must be between 5 and 25."
                                 )
                             )
                         }
-                    } catch (_: NumberFormatException) {
-                        repository.addLog(
-                            TerminalLog(
-                                TerminalState.Error,
-                                "Invalid font value.\n" +
-                                        "Note: Value must be between 5 and 25."
-                            )
-                        )
                     }
                 } else {
                     repository.addLog(
                         TerminalLog(
                             TerminalState.Error,
                             "Usage: font [size]\n" +
-                                    "Example: font 13"
+                                    "Example: font 13\n" +
+                                    "Default: font def"
+
                         )
                     )
                 }

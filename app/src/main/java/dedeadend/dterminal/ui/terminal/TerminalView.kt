@@ -187,7 +187,7 @@ private fun OutputItem(output: TerminalLog, systemSettings: SystemSettings) {
             style = TextStyle(
                 fontFamily = FontFamily.Monospace,
                 fontSize = systemSettings.logFontSize.sp,
-                lineHeight = (systemSettings.logFontSize + 5).sp,
+                lineHeight = (systemSettings.logFontSize + 4).sp,
                 textAlign = TextAlign.Left,
                 color = when (output.state) {
                     TerminalState.Info -> {
