@@ -3,8 +3,6 @@
 </p>
 
 
-# DTerminal
-
 <p align="center">
   <img src="https://img.shields.io/github/v/release/dedeadend/DTerminal?style=for-the-badge&color=green&logo=android" />
   <img src="https://img.shields.io/github/downloads/dedeadend/DTerminal/total?style=for-the-badge&color=orange&logo=github" />
@@ -13,6 +11,7 @@
 </p>
 
 
+# 🍃 DTerminal
 
 **A next-generation terminal emulator for Android that redefines the mobile shell experience.**
 
