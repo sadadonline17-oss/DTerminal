@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/dedeadend/DTerminal/master/DTerminalBanner.png" alt="DTerminal Banner" width="100%">
+  <img src="https://raw.githubusercontent.com/dedeadend/DTerminal/master/screenshots/DTerminalTheme.png" alt="DTerminal Banner" width="100%">
 </p>
 
 <p align="center">
@@ -20,21 +20,16 @@ Built from the ground up with **Jetpack Compose**, DTerminal combines the raw po
 
 Forget clunky, dated terminal interfaces. DTerminal is engineered for **instant startups and fluid interaction**. With its reactive UI and asynchronous command engine, you get a high-performance environment that responds without a millisecond of lag.
 
-
-## ✨ Key Features
+## 🌟 Key Features
 
 - 🔓 **Full Shell Authority**: High-speed execution for both standard (sh) and root (su) commands.
-- 💾 **Persistent Scripting**: A smart workspace to save and execute your custom scripts, eliminating repetitive mobile typing.
 - 🎨 **Real-time Modern UI**: Instant, reactive customization of fonts and colors—see your changes as you type.
 - 🚀 **Ultra-Lightweight**: Optimized for speed and low battery consumption using the latest Material 3 standards.
-- 📜 **Smart History**: Persistent access to your command history in a clean, organized layout.
 
-
-## 📸 Screenshots
-
-| Light | Dark |
-|:---:|:---:|
-| <img src="screenshots/screenshot1.png" width="350"> | <img src="screenshots/screenshot2.png" width="350"> |
+| ⚡ Persistent Scripting | ⚡ 📜 Smart Command History |
+| :---: | :---: |
+| ![Scripts Banner](screenshots/DTerminalScript.png) | ![History Banner](screenshots/DTerminalHistory.png) |
+| A smart workspace to save and execute your custom scripts, eliminating repetitive mobile typing. | Persistent access to your command history in a clean, organized layout. |
 
 
 ## 📥 Getting Started
@@ -53,7 +48,7 @@ Forget clunky, dated terminal interfaces. DTerminal is engineered for **instant 
 
 ## 📌 Note
 
-You might see a Google Play Protect warning while installing the APK. This is common for newly released open-source apps and will be resolved once the app gains more reputation.
+Since DTerminal is a newly released, self-signed APK not yet distributed via the Play Store, Google Play Protect may flag it as "Unknown". As an open-source project, you can always audit the source code yourself or build the APK from source to ensure total transparency.
 
 
 ## ⌨️ Custom Commands
