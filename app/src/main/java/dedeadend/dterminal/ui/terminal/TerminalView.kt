@@ -241,7 +241,7 @@ private fun TerminalTopBar(viewmodel: TerminalViewModel) {
                     text = { Text("Github") },
                     onClick = {
                         viewmodel.toggleToolsMenu(false)
-                        uriHandler.openUri("https://github.com/dedeadend")
+                        uriHandler.openUri("https://github.com/dedeadend/dterminal")
                     },
                     leadingIcon = {
                         Icon(
