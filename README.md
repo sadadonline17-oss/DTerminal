@@ -28,7 +28,7 @@ Forget clunky, dated terminal interfaces. DTerminal is engineered for **instant 
 - 🎨 **Real-time Modern UI**: Instant, reactive customization of fonts and colors—see your changes as you type.
 - 🚀 **Ultra-Lightweight**: Optimized for speed and low battery consumption using the latest Material 3 standards.
 
-| ⚡ Persistent Scripting | ⚡ 📜 Smart Command History |
+| ⚡ Persistent Scripting | 📜 Smart Command History |
 | :---: | :---: |
 | ![Scripts Banner](screenshots/DTerminalScript.png) | ![History Banner](screenshots/DTerminalHistory.png) |
 | A smart workspace to save and execute your custom scripts, eliminating repetitive mobile typing. | Persistent access to your command history in a clean, organized layout. |
